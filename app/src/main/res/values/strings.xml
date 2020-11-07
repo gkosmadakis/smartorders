@@ -48,8 +48,8 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="api_key">AIzaSyDOZJzm7d1jIhhymI8lTCW_bBivJK37xoM</string>
-    <string name="access_token"> pk.eyJ1IjoiZ2tvc21hZGFraXMiLCJhIjoiY2s5M2F4NmJjMDBicTNlb2FhdW95NTZjYSJ9.Zb6rCCeBygUhQLWrbo_-kw
+    <string name="api_key">XXXXXXX</string>
+    <string name="access_token"> XXXXX
     </string>
     <string name="mastercattab1"> Past Orders</string>
     <string name="mastercattab2"> Upcoming</string>

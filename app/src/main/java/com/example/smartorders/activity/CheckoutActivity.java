@@ -318,7 +318,7 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         /*Starting a new thread here to make the hhtpGet call otherwise it throws NetworkMainThreadException,
         * another option is asyncTask */
         Thread thread = new Thread(){
-            String URL = "http://maps.google.com/maps/api/staticmap?center="+latitude+","+longtitude+"&zoom=15&size=450x200&sensor=false&key=AIzaSyA4-fSxkQEb9k7yUIX0lO5LHTh2io5Wgyw";
+            String URL = "http://maps.google.com/maps/api/staticmap?center="+latitude+","+longtitude+"&zoom=15&size=450x200&sensor=false&key=XXXXXXXXXXX";
             HttpClient httpclient = new DefaultHttpClient();
             HttpGet request = new HttpGet(URL);
             Bitmap bmp = null;
