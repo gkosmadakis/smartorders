@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/passwordFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="@+id/mLlayoutBottomButtons"
+        app:layout_constraintTop_toTopOf="@+id/mLlayoutBottomButtons">
+
+        <EditText
+            android:id="@+id/firstName"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:background="@drawable/editextborder"
+            android:inputType="textPersonName"
+            android:layout_marginRight="20dp"
+            android:hint="First" />
+
+        <EditText
+            android:id="@+id/lastName"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:background="@drawable/editextborder"
+            android:inputType="textPersonName"
+            android:hint="Last" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlayoutBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Next"
+            android:background="@drawable/nextbuttonbackground"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/enterCodeView"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:text="What's your name?"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

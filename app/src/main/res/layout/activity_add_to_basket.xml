@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddToBasketActivity">
+
+    <Button
+        android:id="@+id/addToBasketBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/nextbuttonbackground"
+        android:text="Add to Basket"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/instructionsEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Add a note"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/instructionsText"
+        app:layout_constraintStart_toStartOf="@+id/instructionsText"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsText" />
+
+    <LinearLayout
+        android:id="@+id/addRemoveLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/instructionsEditText"
+        app:layout_constraintStart_toStartOf="@+id/instructionsEditText"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsEditText">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/minusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:backgroundTint="@color/quantum_white_100"
+            app:borderWidth="2dp"
+            app:srcCompat="@drawable/minus_black_18dp" />
+
+        <TextView
+            android:id="@+id/quantityText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="28sp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/plusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:backgroundTint="@color/quantum_white_100"
+            app:borderWidth="2dp"
+            app:srcCompat="@drawable/add_black_18dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
+        android:text="Name"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/subheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/removeFromBasketView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Remove from Basket"
+        android:textColor="#FA0E0E"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/addToBasketBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/instructionsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/editextborder"
+        android:text="Special Instructions"
+        android:textSize="22sp"
+        app:layout_constraintStart_toEndOf="@+id/subheader"
+        app:layout_constraintStart_toStartOf="@+id/subheader"
+        app:layout_constraintTop_toBottomOf="@+id/subheader" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

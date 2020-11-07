@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:layout_constraintBottom_toTopOf="@+id/restaurantNameText"
+    tools:context=".activity.CheckoutActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/restaurantNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mapView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/restaurantNameText"
+                app:layout_constraintStart_toStartOf="@+id/restaurantNameText"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantNameText" />
+
+            <TextView
+                android:id="@+id/streetNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/mapView"
+                app:layout_constraintStart_toStartOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/mapView" />
+
+            <TextView
+                android:id="@+id/cityText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/streetNameText"
+                app:layout_constraintStart_toStartOf="@+id/streetNameText"
+                app:layout_constraintTop_toBottomOf="@+id/streetNameText" />
+
+            <TextView
+                android:id="@+id/deliveryOptionsHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Delivery Options"
+                app:layout_constraintStart_toEndOf="@+id/cityText"
+                app:layout_constraintStart_toStartOf="@+id/cityText"
+                app:layout_constraintTop_toBottomOf="@+id/cityText" />
+
+            <LinearLayout
+                android:id="@+id/deliveryOptionsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/deliveryOptionsHeaderText"
+                app:layout_constraintStart_toStartOf="@+id/deliveryOptionsHeaderText"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryOptionsHeaderText">
+
+                <Button
+                    android:id="@+id/meetOutsideBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meet outside" />
+
+                <Button
+                    android:id="@+id/meetAtDoorBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meet at door" />
+
+                <Button
+                    android:id="@+id/leaveAtDoorBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Leave at door" />
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/deliveryOptionDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Delivery Dropdown"
+                app:layout_constraintStart_toEndOf="@+id/deliveryOptionsLayout"
+                app:layout_constraintStart_toStartOf="@+id/deliveryOptionsLayout"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryOptionsLayout" />
+
+            <TextView
+                android:id="@+id/deliveryTimeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/deliveryOptionDropdown"
+                app:layout_constraintStart_toStartOf="@+id/deliveryOptionDropdown"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryOptionDropdown" />
+
+            <LinearLayout
+                android:id="@+id/orderListHeaderLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/deliveryTimeText"
+                app:layout_constraintStart_toStartOf="@+id/deliveryTimeText"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryTimeText">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Your Order"
+                    android:textColorLink="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/addItems"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Items"
+                    android:textColor="#4CAF50"
+                    android:textColorLink="#60CA04" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/orderListHeaderLayout"
+                app:layout_constraintStart_toStartOf="@+id/orderListHeaderLayout"
+                app:layout_constraintTop_toBottomOf="@+id/orderListHeaderLayout" />
+
+            <LinearLayout
+                android:id="@+id/subTotalPriceLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/orderRecyclerView"
+                app:layout_constraintStart_toStartOf="@+id/orderRecyclerView"
+                app:layout_constraintTop_toBottomOf="@+id/orderRecyclerView">
+
+                <TextView
+                    android:id="@+id/subTotalPriceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Subtotal"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/subTotalPriceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/deliveryFeesLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/subTotalPriceLayout"
+                app:layout_constraintStart_toStartOf="@+id/subTotalPriceLayout"
+                app:layout_constraintTop_toBottomOf="@+id/subTotalPriceLayout">
+
+                <TextView
+                    android:id="@+id/deliverFeesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Delivery Fees"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/deliveryFeesValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/totalPriceLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/deliveryFeesLayout"
+                app:layout_constraintStart_toStartOf="@+id/deliveryFeesLayout"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryFeesLayout">
+
+                <TextView
+                    android:id="@+id/totalPriceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/totalPriceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/paymentSelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:drawableRight="@drawable/baseline_chevron_right_black_18dp"
+                android:focusable="false"
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/addPaymentMethodBtn"
+                app:layout_constraintStart_toStartOf="@+id/addPaymentMethodBtn"
+                app:layout_constraintTop_toBottomOf="@+id/addPaymentMethodBtn" />
+
+
+            <Button
+                android:id="@+id/addPaymentMethodBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Add payment method"
+                app:layout_constraintStart_toEndOf="@+id/orderListView"
+                app:layout_constraintStart_toStartOf="@+id/orderListView"
+                app:layout_constraintTop_toBottomOf="@+id/orderListView" />
+
+            <Button
+                android:id="@+id/placeOrderBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nextbuttonbackground"
+                android:text="Place Order"
+                app:layout_constraintTop_toBottomOf="@+id/paymentSelected" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>

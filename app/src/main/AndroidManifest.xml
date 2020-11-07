@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smartorders">
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.PaymentInfoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HomeActivity" />
+        </activity>
+        <activity android:name=".activity.OrderStatusActivity" />
+        <activity android:name=".activity.PaymentDetails">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.AddPaypalActivity" />
+        </activity>
+        <activity android:name=".activity.AddPaypalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.AddPaymentMethodActivity" />
+        </activity>
+        <activity android:name=".activity.AddPaymentMethodActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckoutActivity" />
+        </activity>
+        <activity android:name=".activity.AddCardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.AddPaymentMethodActivity" />
+        </activity>
+        <activity android:name=".activity.CheckoutActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.RestaurantActivity" />
+        </activity>
+        <activity android:name=".activity.AddToBasketActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.RestaurantActivity" />
+        </activity>
+        <activity android:name=".activity.RestaurantActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HomeActivity" />
+        </activity>
+        <activity android:name=".activity.RestaurantsListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activity.FindAddressActivity"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.SettingsActivity" />
+        </activity>
+        <activity android:name=".activity.EnterPhoneActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.GetStartedActivity" />
+        </activity>
+        <activity android:name=".activity.UpdatePasswordActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.UpdateAccountActivity" />
+        </activity>
+        <activity android:name=".activity.UpdatePhoneActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.UpdateAccountActivity" />
+        </activity>
+        <activity android:name=".activity.UpdateAccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.EditAccountActivity" />
+        </activity>
+        <activity android:name=".activity.EditAccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.SettingsActivity" />
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activity.VerificationActivity"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.EnterPhoneActivity" />
+        </activity>
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="@string/title_activity_home" />
+        <activity android:name=".activity.GetStartedActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.ui.login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="sqip.SQUARE_APPLICATION_ID"
+            android:value="sandbox-sq0idb-1En09Kn5Folxz-ezlCWmeg" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDaLz2mZZweG6mHt4RUNulx-WMTrR7g-yA" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>

@@ -1,0 +1,238 @@
+{
+  "FoodMenu": {
+    "PickedForYou": {
+      "01": {
+        "name": "Bougatsa with Spinach and Feta Cheese 240gr",
+        "subheader": "Handmade vegetarian bougatsa with fresh spinach, feta and mizithra cheese.",
+        "description": "Contains Gluten - Soybean - Milk Product - May Contain Traces of Sesame and Nut",
+        "price": "£4.5"
+      },
+      "02": {
+        "name": "Freddo Iced Caffe Espresso",
+        "subheader": "16oz",
+        "description": "",
+        "price": "£3.05"
+      },
+      "03": {
+        "name": "Flogera Greek Bacon and Greek Philadelphia Stl Cheese Pie 200gr",
+        "subheader": "Handmade pastry pie with bacon and Greek Philadelphia stl cheese.",
+        "description": "Contains Gluten - Milk - Sesame - Lactose - Egg - Soy Products - Dairy Products - Possible Traces of Celery, Mustard and Nuts",
+        "price": "£3.85"
+      },
+      "04": {
+        "name": "Vegan Spanakopita Triangle Spinach and Herbs Pie 220gr",
+        "subheader": "Handmade phyllo pie opened with a wooden rolling pin filled with fresh spinach and herbs.",
+        "description": "Contains Gluten - Soya Product - Possibly Traces of Sesame and Nuts",
+        "price": "£3.85"
+      }
+    },
+    "VegetarianPies": {
+      "01": {
+        "name": "Bougatsa with Feta and Mizithra Cheese 240gr",
+        "subheader": "Handmade vegetarian bougatsa with feta and mizithra cheese.",
+        "description": "Contains Gluten - Milk - May Contain Traces of Sesame and Dry Nuts",
+        "price": "£4.5"
+      },
+      "02": {
+        "name": "Bougatsa with Spinach and Feta Cheese 240gr",
+        "subheader": "Handmade vegetarian bougatsa with fresh spinach, feta and mizithra cheese.",
+        "description": "Contains Gluten - Soybean - Milk Product - May Contain Traces of Sesame and Nut",
+        "price": "£4.5"
+      },
+      "03": {
+        "name": "Kaseropita Graviere Cheese Pie 230gr",
+        "subheader": "Handmade pie with Greek graviere and Greek 6 months yellow mature cheese",
+        "description": "Contains Wheat - Milk - Egg - Soybeans - Gluten - Mustard - Nuts - Peanuts - May Contain Traces of Sesame.",
+        "price": "£4.5"
+      },
+      "04": {
+        "name": "Tiropita Triangle Feta Cheese Pie 220gr",
+        "subheader": "Handmade phyllo pie opened with a wooden rolling pin with feta and mizithra cheese.",
+        "description": "Contains Gluten - Egg - Milk - Dairy Products - Soya Products - Possibly Traces of Sesame and Nuts",
+        "price": "£3.85"
+      }
+    },
+    "VeganPies": {
+      "01": {
+        "name": "Vegan Flogera Flute with Tahini and Dark Praline Pie 200gr Sweet",
+        "subheader": "Handmade tahini and dark praline flute sprinkled with sesame seeds.",
+        "description": "Contains Wheat - Sesame - Soy - Nuts - May Contain Traces of Milk",
+        "price": "£3.85"
+      },
+      "02": {
+        "name": "Vegan Manitaropita Triangle Mushroom and Peppers pie 220gr",
+        "subheader": "Handmade phyllo pie opened with a wooden rolling pin filled with mushrooms, peppers, herbs, and a hint of mustard.",
+        "description": "Contains Gluten - Soya Oil - Mustard - Celery - Possibly Traces of Sesame and Nuts",
+        "price": "£3.85"
+      },
+      "03": {
+        "name": "Vegan Spanakopita Triangle Spinach and Herbs Pie 220gr",
+        "subheader": "Handmade phyllo pie opened with a wooden rolling pin filled with fresh spinach and herbs.",
+        "description": "Contains Gluten - Soya Product - Possibly Traces of Sesame and Nuts",
+        "price": "£3.85"
+      },
+      "04": {
+        "name": "Vegan Patatopita Double Potato Roll with Oregano 220gr",
+        "subheader": "Handmade vegan double potato roll with herbs and oregano.",
+        "description": "Contains Gluten - Soya Product - Mustard - Sulfur Dioxide - Celery - Possibly Traces of Sesame",
+        "price": "£3.85"
+      }
+    },
+    "MeatPies": {
+      "01": {
+        "name": "Zabonotiropita Greek Ham and Greek Edam Cheese with Tomato and Oregano Pie 250gr",
+        "subheader": "Handmade puff pastry pie with ham, mature cheese, and tomato sauce with oregano",
+        "description": "Contains Guten - Milk - Soy - Egg Products - Lactose - Celery - Nuts - Mustard - Possibly Traces of Sesame.",
+        "price": "£4.5"
+      },
+      "02": {
+        "name": "Patiti Greek Bacon and Greek Parmezan Cheese Pie 240gr",
+        "subheader": "Handmade puff pastry pie with bacon and Greek parmesan cheese.",
+        "description": "Contains Gluten - Milk - Soy Products - Dairy Products - Egg Products - Lactose - Possibly Traces of Sesame, Celery, Mustard and Nuts",
+        "price": "£4.5"
+      },
+      "03": {
+        "name": "Flogera Greek Bacon and Greek Philadelphia Stl Cheese Pie 200gr",
+        "subheader": "Handmade pastry pie with bacon and Greek Philadelphia stl cheese",
+        "description": "Contains Gluten - Milk - Sesame - Lactose - Egg - Soy Products - Dairy Products - Possible Traces of Celery, Mustard and Nuts",
+        "price": "£3.85"
+      }
+    },
+    "Sweets": {
+      "01": {
+        "name": "Greek Gianniotikos Baklavas 165gr",
+        "subheader": "Greek handmade phyllo baklavas from Giannena region with syruped walnuts.",
+        "description": "Contains Gluten - Eggs - Walnuts - Wheat - Milk - Nuts - Soy - Almond - May Contain Traces of Sesame and Nuts",
+        "price": "£4.25"
+      },
+      "02": {
+        "name": "Greek Portokalopita Orange Pie 165gr",
+        "subheader": "Greek handmade semolina orange pie.",
+        "description": "Contains Sulfur Dioxide - Wheat - Milk - Eggs - Semolina - May Contain Traces of Nuts and Sesame",
+        "price": "£4.25"
+      },
+      "03": {
+        "name": "Lychnaraki Cookie from Crete Island 6 Pieces",
+        "subheader": "60gr each. Greek handmade soft cookies with mizithra soft cheese, vanilla, and cinnamon from Crete island.",
+        "description": "Contains Gluten - Eggs - Wheat - Milk - Nuts - May Contain Traces of Sesame and Mustard Soy",
+        "price": "£7.95"
+      }
+    },
+    "DairyFreeSweets": {
+      "01": {
+        "name": "Greek Dairy-free Melomakarona Honey-Praline Cookies 10 Pieces",
+        "subheader": "40gr each. Greek dairy-free handmade honey soft cookies with walnuts, orange, cinnamon clove, and praline.",
+        "description": "Contains Wheat - Walnuts - Nuts Semolina - Wheat - Praline - May Contain Traces of Sesame",
+        "price": "£7.95"
+      }
+    },
+    "Coffees": {
+      "01": {
+        "name": "Caffe Americano",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "02": {
+        "name": "Caffe Cappuccino",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "03": {
+        "name": "Caffe Latte",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "04": {
+        "name": "Caffe Flat Whit",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "05": {
+        "name": "Caffe Mocha",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "06": {
+        "name": "Freddo Iced Caffe Mocha",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "07": {
+        "name": "Freddo Iced Caffe Espresso",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "08": {
+        "name": "Freddo Iced Caffe Cappuccino",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "09": {
+        "name": "Hot Chocolate",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "010": {
+        "name": "Iced Signature Hot Chocolate",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "011": {
+        "name": "Iced Tea Double Strawberry",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      },
+      "012": {
+        "name": "Iced Tea Double Peppermint",
+        "subheader": "12oz",
+        "description": "",
+        "price": "£2.95"
+      }
+    }
+  },
+  "Users" : {
+    "1Stya25eIXMcZwyY6DhDvXJYdd02" : {
+      "+16505553435" : "someone@email.com",
+      "email" : "someone@email.com",
+      "first name" : "First",
+      "last name" : "Last",
+      "phone" : "+16505553435"
+    },
+    "gVQ4ac7fVNXYfrgR3RLJyEbeTVs1" : {
+      "+16505553434" : "some@email.com",
+      "email" : "some@email.com",
+      "first name" : "George",
+      "home" : {
+        "businessOrBuildingName" : "Business",
+        "deliveryOption" : "Meet Outside",
+        "deliveryOptionInstructions" : "Call me",
+        "flatOrHouseNumber" : "5",
+        "fullAddressDelivery" : "6 Smeaton Grove, Glasgow G20 9JB, UK",
+        "postcode" : "G20",
+        "streetAddress" : "Smeaton Grove"
+      },
+      "last name" : "Kosmadakis",
+      "phone" : "+16505553434",
+      "work" : {
+        "businessOrBuildingName" : "Sabio",
+        "deliveryOption" : "Meet at door",
+        "deliveryOptionInstructions" : "Knock the door",
+        "flatOrHouseNumber" : "100",
+        "fullAddressDelivery" : "Royal Exchange House, 100 Queen St, Glasgow G1 3DN, UK",
+        "postcode" : "G1 3DN",
+        "streetAddress" : "Queen Street"
+      }
+    }
+  }
+}

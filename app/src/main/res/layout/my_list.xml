@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+<ImageView
+    android:id="@+id/icon"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginTop="5dp"/>
+
+<TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Medium Text"
+    android:textStyle="bold"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:layout_marginLeft="40dp"
+    android:layout_marginTop="5dp"
+    android:padding="2dp"
+    android:textColor="#4d4d4d" />
+
+<TextView
+    android:id="@+id/savedPlaceChildView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ems="10"
+    android:layout_below="@id/textView"/>
+
+</RelativeLayout>

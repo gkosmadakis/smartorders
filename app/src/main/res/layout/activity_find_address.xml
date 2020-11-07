@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/findAddressActivityLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.FindAddressActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/deliveryOptionsLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="70dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ExpandableListView
+            android:id="@+id/deliveryOptionsListView"
+            android:layout_width="500dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp">
+
+        </ExpandableListView>
+
+        <TextView
+            android:id="@+id/deliveryOptionsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Options"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/requiredView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="*Required"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/removeAddressView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Address"
+            android:layout_marginTop="220dp"
+            android:layout_marginLeft="150dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/saveBtnLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="220dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/deliveryOptionsLayout"
+        app:layout_constraintTop_toTopOf="@+id/deliveryOptionsLayout">
+
+        <Button
+            android:id="@+id/saveAddressDeliveryBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/nextbuttonbackground"
+            android:text="Save" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/showAddressResultslayout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/addressView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Address"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/fullAddressView"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/baseline_chevron_right_black_18dp"
+            android:layout_marginTop="30dp" />
+
+        <ListView
+            android:id="@+id/addressResultsListView"
+            android:layout_width="400dp"
+            android:layout_marginTop="70dp"
+            android:layout_height="230dp">
+
+        </ListView>
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/idCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="4dp"
+        tools:ignore="MissingConstraints">
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/places_recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

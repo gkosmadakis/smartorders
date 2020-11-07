@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/settingsView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="#040404"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_account_circle_black_24dp" />
+
+        <TextView
+            android:id="@+id/fullNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="120dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/editAccountLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="150dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="EDIT ACCOUNT"
+            android:textColor="#8DC54D"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/settings2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saved Places" />
+
+        <ListView
+            android:id="@+id/placesListView"
+            android:layout_width="wrap_content"
+            android:layout_height="220dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="0dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/settings3"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/otherOptionsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other Options"
+            android:textColor="#040404"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/signOutLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Sign Out"
+            android:textColor="#8DC54D"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

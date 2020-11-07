@@ -1,0 +1,36 @@
+{
+  "Users" : {
+    "1Stya25eIXMcZwyY6DhDvXJYdd02" : {
+      "+16505553435" : "someone@email.com",
+      "email" : "someone@email.com",
+      "first name" : "First",
+      "last name" : "Last",
+      "phone" : "+16505553435"
+    },
+    "gVQ4ac7fVNXYfrgR3RLJyEbeTVs1" : {
+      "+16505553434" : "some@email.com",
+      "email" : "some@email.com",
+      "first name" : "George",
+      "home" : {
+        "businessOrBuildingName" : "Business",
+        "deliveryOption" : "Meet Outside",
+        "deliveryOptionInstructions" : "Call me",
+        "flatOrHouseNumber" : "5",
+        "fullAddressDelivery" : "6 Smeaton Grove, Glasgow G20 9JB, UK",
+        "postcode" : "G20",
+        "streetAddress" : "Smeaton Grove"
+      },
+      "last name" : "Kosmadakis",
+      "phone" : "+16505553434",
+      "work" : {
+        "businessOrBuildingName" : "Sabio",
+        "deliveryOption" : "Meet at door",
+        "deliveryOptionInstructions" : "Knock the door",
+        "flatOrHouseNumber" : "100",
+        "fullAddressDelivery" : "Royal Exchange House, 100 Queen St, Glasgow G1 3DN, UK",
+        "postcode" : "G1 3DN",
+        "streetAddress" : "Queen Street"
+      }
+    }
+  }
+}
