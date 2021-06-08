@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.RestaurantActivity">
+    tools:context=".activities.RestaurantActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -74,12 +74,12 @@
                 android:layout_marginTop="0dp"
                 android:text="Menu"/>
 
-            <com.example.smartorders.VerticalViewPager
+            <com.example.smartorders.utils.VerticalViewPager
                 android:id="@+id/verticalViewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </com.example.smartorders.VerticalViewPager>
+            </com.example.smartorders.utils.VerticalViewPager>
         </LinearLayout>
 
 

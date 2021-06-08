@@ -3,61 +3,56 @@
     package="com.example.smartorders">
 
     <application
-        android:name=".MyApplication"
+        android:name=".models.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.PaymentInfoActivity">
+        <activity android:name=".activities.PaymentInfoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.HomeActivity" />
+                android:value=".activities.HomeActivity" />
         </activity>
-        <activity android:name=".activity.OrderStatusActivity" />
-        <activity android:name=".activity.PaymentDetails">
+        <activity android:name=".activities.OrderStatusActivity" />
+        <activity android:name=".activities.PaymentDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.AddPaypalActivity" />
+                android:value=".activities.AddPaypalActivity" />
         </activity>
-        <activity android:name=".activity.AddPaypalActivity">
+        <activity android:name=".activities.AddPaypalActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.AddPaymentMethodActivity" />
+                android:value=".activities.AddPaymentMethodActivity" />
         </activity>
-        <activity android:name=".activity.AddPaymentMethodActivity">
+        <activity android:name=".activities.AddPaymentMethodActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.CheckoutActivity" />
+                android:value=".activities.CheckoutActivity" />
         </activity>
-        <activity android:name=".activity.AddCardActivity">
+        <activity android:name=".activities.AddCardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.AddPaymentMethodActivity" />
+                android:value=".activities.AddPaymentMethodActivity" />
         </activity>
-        <activity android:name=".activity.CheckoutActivity">
+        <activity android:name=".activities.CheckoutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.RestaurantActivity" />
+                android:value=".activities.RestaurantActivity" />
         </activity>
-        <activity android:name=".activity.AddToBasketActivity">
+        <activity android:name=".activities.AddToBasketActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.RestaurantActivity" />
+                android:value=".activities.RestaurantActivity" />
         </activity>
-        <activity android:name=".activity.RestaurantActivity">
+        <activity android:name=".activities.RestaurantActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.HomeActivity" />
-        </activity>
-        <activity android:name=".activity.RestaurantsListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.HomeActivity" />
+                android:value=".activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".activity.FindAddressActivity"
+            android:name=".activities.FindAddressActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -65,60 +60,60 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.SettingsActivity" />
+                android:value=".activities.SettingsActivity" />
         </activity>
-        <activity android:name=".activity.EnterPhoneActivity">
+        <activity android:name=".activities.EnterPhoneActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.GetStartedActivity" />
+                android:value=".activities.GetStartedActivity" />
         </activity>
-        <activity android:name=".activity.UpdatePasswordActivity">
+        <activity android:name=".activities.UpdatePasswordActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.UpdateAccountActivity" />
+                android:value=".activities.UpdateAccountActivity" />
         </activity>
-        <activity android:name=".activity.UpdatePhoneActivity">
+        <activity android:name=".activities.UpdatePhoneActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.UpdateAccountActivity" />
+                android:value=".activities.UpdateAccountActivity" />
         </activity>
-        <activity android:name=".activity.UpdateAccountActivity">
+        <activity android:name=".activities.UpdateAccountActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.EditAccountActivity" />
+                android:value=".activities.EditAccountActivity" />
         </activity>
-        <activity android:name=".activity.EditAccountActivity">
+        <activity android:name=".activities.EditAccountActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.SettingsActivity" />
+                android:value=".activities.SettingsActivity" />
         </activity>
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.HomeActivity" />
+                android:value=".activities.HomeActivity" />
         </activity>
         <activity
-            android:name=".activity.VerificationActivity"
+            android:name=".activities.VerificationActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.EnterPhoneActivity" />
+                android:value=".activities.EnterPhoneActivity" />
         </activity>
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home" />
-        <activity android:name=".activity.GetStartedActivity">
+        <activity android:name=".activities.GetStartedActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ui.login.LoginActivity"
+            android:name=".activities.ui.login.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".activities.SplashScreenActivity"
             android:label="@string/app_name"
             android:screenOrientation="unspecified"
             android:theme="@android:style/Theme.Black.NoTitleBar">
