@@ -48,9 +48,9 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="api_key">AIzaSyDOZJzm7d1jIhhymI8lTCW_bBivJK37xoM</string>
+    <string name="api_key">XXXXXXXXXXXXXXXXXXXXXX</string>
     <string name="access_token"> XXXXX</string>
-    <string name="maps_static_api_key">AIzaSyA4-fSxkQEb9k7yUIX0lO5LHTh2io5Wgyw</string>
+    <string name="maps_static_api_key">XXXXXXXXXXXXXXXXXXXXXXXXXXXX</string>
     <string name="mastercattab1"> Past Orders</string>
     <string name="mastercattab2"> Upcoming</string>
     <string name="network_failure">There was an error processing the payment, please check your network connection.</string>
