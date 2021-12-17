@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.smartorders.R;
 import com.example.smartorders.adapters.FoodListAdapter;
-import com.example.smartorders.models.MenuDetailDataModel;
+import com.example.smartorders.models.MenuData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,11 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PageFragment extends Fragment {
 
-    private Map<Integer, MenuDetailDataModel> modifiedReceivedListMap;
+    private Map<Integer, MenuData> modifiedReceivedListMap;
     private RecyclerView listView;
     private String headerRequested;
 
-    public static PageFragment newInstance(int page, String headerRequested,Map<Integer,MenuDetailDataModel> menuDetailsListMapRequested) {
+    public static PageFragment newInstance(int page, String headerRequested,Map<Integer, MenuData> menuDetailsListMapRequested) {
         Bundle args = new Bundle();
         args.putSerializable("List", (Serializable) menuDetailsListMapRequested);
         args.putString("headerRequested", headerRequested);
@@ -37,7 +37,7 @@ public class PageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        modifiedReceivedListMap = (Map<Integer, MenuDetailDataModel>) getArguments().getSerializable("List");
+        modifiedReceivedListMap = (Map<Integer, MenuData>) getArguments().getSerializable("List");
         headerRequested = getArguments().getString("headerRequested");
     }
 

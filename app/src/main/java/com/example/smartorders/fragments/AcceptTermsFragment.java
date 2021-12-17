@@ -10,31 +10,31 @@ import android.widget.Button;
 import com.example.smartorders.R;
 import com.example.smartorders.activities.HomeActivity;
 import com.example.smartorders.activities.VerificationActivity;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.smartorders.models.SingleInstanceUser;
+import com.example.smartorders.service.UserServiceImpl;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class AcceptTermsFragment extends Fragment {
-    private FirebaseAuth mAuth;
 
-        @Nullable
+    @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             super.onCreateView(inflater, container, savedInstanceState);
-            mAuth = FirebaseAuth.getInstance();
-
             View rootView = inflater.inflate(R.layout.accept_terms_fragment, container, false);
-            Button buttonInFragment1 = rootView.findViewById(R.id.buttonNext);
-            buttonInFragment1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((VerificationActivity)getActivity()).setCurrentItem (5, true);
-
-                    Intent intent = new Intent(view.getContext(), HomeActivity.class);
-                    startActivity(intent);
-
-                }
+            Button acceptTermsBtn = rootView.findViewById(R.id.buttonNext);
+            acceptTermsBtn.setOnClickListener(view -> {
+                ((VerificationActivity)getActivity()).setCurrentItem (5, true);
+                // user has accepted terms and conditions so add the user to realtime database
+                UserServiceImpl userService = new UserServiceImpl();
+                SingleInstanceUser authCredentialSingleInstance = SingleInstanceUser.getInstance();
+                userService.addUserToRealtimeDatabase(authCredentialSingleInstance);
+                // call storeUserDetailsToSharedPrefs here to store user details to shared preferences
+                userService.storeUserDetailsToSharedPrefs(authCredentialSingleInstance.getPassword(), getContext(), authCredentialSingleInstance.getuID());
+                // start Home Activity
+                Intent intent = new Intent(view.getContext(), HomeActivity.class);
+                startActivity(intent);
             });
 
             return rootView;

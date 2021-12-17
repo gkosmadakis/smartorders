@@ -1,21 +1,21 @@
 package com.example.smartorders.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.smartorders.models.MyApplication;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.smartorders.R;
 import com.example.smartorders.config.Config;
+import com.example.smartorders.models.MyApplication;
+import com.example.smartorders.service.PaymentServiceImpl;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -66,17 +66,13 @@ public class AddPaypalActivity extends AppCompatActivity {
         amountToPay = findViewById(R.id.edtAmount);
         amountToPay.setText(totalPrice);
 
-        btnPayNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                processPayment();
-            }
-        });
+        btnPayNow.setOnClickListener(view -> processPayment());
+        //new PaymentServiceImpl().processPaypalPayment(amountToPay.getText().toString(), this, PAYPAL_REQUEST_CODE));
     }
-
+    /*TODO add this in PaymentRepositoryImpl as processPaypalPayment */
     private void processPayment() {
         amount = amountToPay.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)),"GBP",
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(amount),"GBP",
                 "Purchase Goods",PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
@@ -109,6 +105,7 @@ public class AddPaypalActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
     }
 
+    /*TODO this method possibly is the same as the one in the PaymentRepositoryImpl */
     private int storeOrderToFirebaseDB() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");

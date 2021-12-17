@@ -5,29 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/welcomeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome Back, \nEnter your password to continue"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/existingPassword"
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_weight="1.0"
-        android:background="@drawable/editextborder"
-        android:ems="10"
-        android:hint="Minimum 6 characters"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/welcomeView"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeView" />
-
     <LinearLayout
         android:id="@+id/mLlayoutBottomButtons"
         android:layout_width="match_parent"

@@ -6,8 +6,9 @@ import android.util.Log;
 
 import com.example.smartorders.interfaces.OnGetDataListener;
 import com.example.smartorders.fragments.PageFragment;
-import com.example.smartorders.activities.RestaurantActivity;
-import com.example.smartorders.models.MenuDetailDataModel;
+import com.example.smartorders.models.MenuData;
+import com.example.smartorders.service.MenuServiceImpl;
+import com.example.smartorders.utils.MapUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -26,7 +27,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     private int PAGE_COUNT = 0;
     private Context context;
-    private LinkedHashMap<String, Map<Integer, MenuDetailDataModel>> modifiedMenuDetailLinkedHashMap;
+    private LinkedHashMap<String, Map<Integer, MenuData>> modifiedMenuDetailLinkedHashMap;
     private  ProgressDialog mProgressDialog;
     List<String> tabTitles;
 
@@ -42,7 +43,7 @@ public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
         /*here i take the menu category and the corresponding list of MenuDetailDataModel of the menu category
         * i.e Picked for you -> list of the Picked for you*/
         String headerRequested = tabTitles.get(position);
-        Map <Integer,MenuDetailDataModel> menuDetailDataModelList = modifiedMenuDetailLinkedHashMap.get(headerRequested);
+        Map <Integer, MenuData> menuDetailDataModelList = modifiedMenuDetailLinkedHashMap.get(headerRequested);
         return PageFragment.newInstance(position + 1, headerRequested,menuDetailDataModelList);
     }
 
@@ -58,7 +59,7 @@ public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     private void callFirebaseToGetMenu(String child) {
-        new RestaurantActivity().retrieveMenuDetailsFromFirebase(child, new OnGetDataListener() {
+        new MenuServiceImpl().getMenuFromFirebase(child, new OnGetDataListener() {
             @Override
             public void onStart() {
                 //DO SOME THING WHEN START GET DATA HERE
@@ -71,15 +72,15 @@ public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
             }
 
             @Override
-            public void onSuccess(DataSnapshot data, Map <String, Map<Integer,MenuDetailDataModel>> menuDetailMap) {
+            public void onSuccess(DataSnapshot data, Map <String, Map<Integer, MenuData>> menuDetailMap) {
                 //DO SOME THING WHEN GET DATA SUCCESS HERE
+                MapUtils mapUtils = new MapUtils();
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
-                    for (Map.Entry<String, Map<Integer,MenuDetailDataModel>> entry : menuDetailMap.entrySet()) {
+                    for (Map.Entry<String, Map<Integer, MenuData>> entry : menuDetailMap.entrySet()) {
                         Log.i("RestaurantPagerAdapter", "Key is "+entry.getKey()+ " Value is "+entry.getValue());
                     }
-
-                    modifiedMenuDetailLinkedHashMap = modifyMenuDetailMap(menuDetailMap);
+                    modifiedMenuDetailLinkedHashMap = mapUtils.modifyMenuDetailMap(menuDetailMap);
                     tabTitles =  new ArrayList<>(modifiedMenuDetailLinkedHashMap.keySet());
                     PAGE_COUNT = tabTitles.size();
                     notifyDataSetChanged();
@@ -91,55 +92,6 @@ public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
                 Log.e("RestaurantPageAdapter ","Error while getting data from Firebase "+databaseError);
             }
         });
-    }
-
-    private LinkedHashMap modifyMenuDetailMap(Map<String, Map<Integer,MenuDetailDataModel>> menuDetailMap) {
-        Map<String, Map<Integer,MenuDetailDataModel>> modifiedMenuDetailHashMap = new HashMap<>();
-        Iterator<Map.Entry<String, Map<Integer,MenuDetailDataModel>>> iterator = menuDetailMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Map<Integer,MenuDetailDataModel>> entry = iterator.next();
-            String key = entry.getKey();
-            if(key.equals("VeganPies")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Vegan Pies", entry.getValue());
-            }
-            if(key.equals("PickedForYou")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Picked for you", entry.getValue());
-            }
-            if(key.equals("MeatPies")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Meat Pies", entry.getValue());
-            }
-            if(key.equals("DairyFreeSweets")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Dairy Free Sweets", entry.getValue());
-            }
-            if(key.equals("VegetarianPies")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Vegetarian Pies", entry.getValue());
-            }
-            if(key.equals("Sweets")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Sweets", entry.getValue());
-            }
-            if(key.equals("Coffees")){
-                iterator.remove();
-                modifiedMenuDetailHashMap.put("Coffees", entry.getValue());
-            }
-        }
-        /*Here i put in the map first the Picked for you to appear first in the tabs and in the menu list */
-        LinkedHashMap<String, Map<Integer,MenuDetailDataModel>> modifiedMenuDetailLinkedHashMap = new LinkedHashMap<String, Map<Integer,MenuDetailDataModel>>(modifiedMenuDetailHashMap.size());
-        Map<Integer, MenuDetailDataModel> pickedForYou = modifiedMenuDetailHashMap.remove("Picked for you");
-        modifiedMenuDetailLinkedHashMap.put("Picked for you", pickedForYou);
-        modifiedMenuDetailLinkedHashMap.putAll(modifiedMenuDetailHashMap);
-
-        for (Map.Entry<String, Map<Integer,MenuDetailDataModel>> entry : modifiedMenuDetailLinkedHashMap.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            Log.i("Modified Map ","Key is "+key+" value is "+value);
-        }
-        return modifiedMenuDetailLinkedHashMap;
     }
 
 }

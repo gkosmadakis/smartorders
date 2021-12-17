@@ -80,6 +80,7 @@ public class MyApplication extends MultiDexApplication {
         price = "";
         foodNames.clear();
         quantityNamePriceMap.clear();
+        instructionToFoodNameMap.clear();
     }
 
 }

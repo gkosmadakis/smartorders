@@ -1,7 +1,7 @@
 package com.example.smartorders.adapters;
 
 import com.example.smartorders.fragments.EmailAddressFragment;
-import com.example.smartorders.fragments.EnterPasswordOrCodeFragment;
+import com.example.smartorders.fragments.EnterOTPFragment;
 import com.example.smartorders.fragments.AcceptTermsFragment;
 import com.example.smartorders.fragments.FullNameFragment;
 import com.example.smartorders.fragments.PasswordFragment;
@@ -18,12 +18,9 @@ public class ViewPagerAdapter  extends FragmentPagerAdapter {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position)
-            {
-                /*case 0:
-                    return new EnterPhoneNumberFragment(); *///ChildFragment1 at position 0
+            switch (position) {
                 case 0:
-                    return new EnterPasswordOrCodeFragment(); //ChildFragment2 at position 1
+                    return new EnterOTPFragment(); //ChildFragment2 at position 1
                 case 1:
                     return new EmailAddressFragment(); //ChildFragment3 at position 2
                 case 2:

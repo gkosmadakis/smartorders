@@ -11,7 +11,7 @@ import com.example.smartorders.R;
 import com.example.smartorders.utils.TextItemViewHolder;
 import com.example.smartorders.activities.AddToBasketActivity;
 import com.example.smartorders.activities.RestaurantActivity;
-import com.example.smartorders.models.MenuDetailDataModel;
+import com.example.smartorders.models.MenuData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FoodListAdapter extends RecyclerView.Adapter{
     private final Context context;
-    private List<MenuDetailDataModel> modifiedReceivedList;
+    private List<MenuData> modifiedReceivedList;
 
-    public FoodListAdapter(Context context, List<MenuDetailDataModel> modifiedReceivedList) {
+    public FoodListAdapter(Context context, List<MenuData> modifiedReceivedList) {
         this.context = context;
         this.modifiedReceivedList = modifiedReceivedList;
     }
@@ -46,7 +46,7 @@ public class FoodListAdapter extends RecyclerView.Adapter{
             public void onClick(View view) {
                 Toast.makeText(context, "FoodListAdapter " + modifiedReceivedList.get(position).getName(), Toast.LENGTH_SHORT).show();
                 /*User selected/clicked on one item from the food menu start add to basket activity */
-                MenuDetailDataModel selectedItem = modifiedReceivedList.get(position);
+                MenuData selectedItem = modifiedReceivedList.get(position);
                 Intent i = new Intent(context, AddToBasketActivity.class);
                 i.putExtra("selectedItem", (Serializable) selectedItem);
                 i.putExtra("Class","FoodListAdapter");

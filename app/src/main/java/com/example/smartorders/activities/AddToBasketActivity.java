@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.smartorders.models.MenuDetailDataModel;
+import com.example.smartorders.models.MenuData;
 import com.example.smartorders.models.MyApplication;
 import com.example.smartorders.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,7 +25,7 @@ public class AddToBasketActivity extends AppCompatActivity {
     private TextView foodNameSelected;
     private TextView subheaderFoodSelected;
     private TextView quantityText;
-    private MenuDetailDataModel menuDetailDataModelSentFromIntent;
+    private MenuData menuDetailDataModelSentFromIntent;
     private FloatingActionButton plusBtn, minusBtn;
     private Button addToBasketBtn;
     private int quantityAdded = 1;
@@ -57,7 +57,7 @@ public class AddToBasketActivity extends AppCompatActivity {
 
         if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
             /*Get the object from FoodListAdapter */
-            menuDetailDataModelSentFromIntent = (MenuDetailDataModel) intent.getSerializableExtra("selectedItem");
+            menuDetailDataModelSentFromIntent = (MenuData) intent.getSerializableExtra("selectedItem");
             priceDouble = getDoublePriceFromMenuDetailModel(menuDetailDataModelSentFromIntent.getPrice());
             /*Set the  name and the subheader texts */
             foodNameSelected.setText(menuDetailDataModelSentFromIntent.getName());

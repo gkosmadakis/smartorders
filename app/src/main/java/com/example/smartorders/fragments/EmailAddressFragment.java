@@ -1,6 +1,5 @@
 package com.example.smartorders.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -12,21 +11,19 @@ import android.widget.EditText;
 
 import com.example.smartorders.R;
 import com.example.smartorders.activities.VerificationActivity;
-import com.example.smartorders.interfaces.storeDataListener;
+import com.example.smartorders.models.SingleInstanceUser;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class EmailAddressFragment extends Fragment {
 
-    private storeDataListener storeDataListener;
-
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             super.onCreateView(inflater, container, savedInstanceState);
             View rootView = inflater.inflate(R.layout.enter_email_address_fragment, container, false);
-            Button buttonInFragment1 = rootView.findViewById(R.id.buttonNext);
+            Button emailBtn = rootView.findViewById(R.id.buttonNext);
             final EditText emailAddress = rootView.findViewById(R.id.emailAddress);
 
             if (TextUtils.isEmpty(emailAddress.getText().toString())){
@@ -36,27 +33,18 @@ public class EmailAddressFragment extends Fragment {
                 emailAddress.setError("Please Enter a valid email address");
             }
 
-                buttonInFragment1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((VerificationActivity) getActivity()).setCurrentItem(2, true);
-                        storeDataListener.storeEmailAddress(emailAddress.getText().toString());
-
-                    }
-                });
+            emailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((VerificationActivity) getActivity()).setCurrentItem(2, true);
+                SingleInstanceUser authCredentialSingleInstance = SingleInstanceUser.getInstance();
+                // set singleton object with appropriate values
+                authCredentialSingleInstance.setEmail(emailAddress.getText().toString());
+                }
+            });
 
             return rootView;
         }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            storeDataListener = (storeDataListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
-        }
-    }
 
 }
 

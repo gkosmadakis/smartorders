@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.smartorders.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,9 +23,6 @@ import com.stripe.android.view.CardInputWidget;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class AddCardActivity extends AppCompatActivity {
 
@@ -44,6 +42,7 @@ public class AddCardActivity extends AppCompatActivity {
             Card card = cardInputWidget.getCard();
             if (card != null) {
                 // Create a Stripe token from the card details
+                /*TODO this should be a service */
                 Stripe stripe = new Stripe(getApplicationContext(), PaymentConfiguration.getInstance(getApplicationContext()).getPublishableKey());
                 stripe.createToken(card, new ApiResultCallback<Token>() {
                     @Override
@@ -53,23 +52,17 @@ public class AddCardActivity extends AppCompatActivity {
                         Map<String, Object> tokenDetails = new HashMap<>();
                         tokenDetails.put("token",token.getId());
                         tokenRef = FirebaseFirestore.getInstance().collection("stripe_customers").document(mAuth.getUid()).collection("tokens").document();
-                        tokenRef.set(tokenDetails).addOnSuccessListener(new OnSuccessListener<Void>(){
-                            @Override
-                            public void onSuccess(Void aVoid){
-                                Toast.makeText(getApplicationContext(), "Token successfully added to database", Toast.LENGTH_LONG).show();
-                                Log.i(TAG, "Firestore tokens collection created, calling Firebase Function addPaymentSource");
-                                Intent data = new Intent();
-                                data.putExtra("token",token.getId());
-                                // Activity finished ok, return the data
-                                setResult(RESULT_OK, data);
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener(){
-                            @Override
-                            public void onFailure(@NonNull Exception e){
-                                Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                                Log.e(TAG, e.getLocalizedMessage());
-                            }
+                        tokenRef.set(tokenDetails).addOnSuccessListener(aVoid -> {
+                            Toast.makeText(getApplicationContext(), "Token successfully added to database", Toast.LENGTH_LONG).show();
+                            Log.i(TAG, "Firestore tokens collection created, calling Firebase Function addPaymentSource");
+                            Intent data = new Intent();
+                            data.putExtra("token",token.getId());
+                            // Activity finished ok, return the data
+                            setResult(RESULT_OK, data);
+                            finish();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            Log.e(TAG, e.getLocalizedMessage());
                         });
                     }
                     @Override

@@ -2,6 +2,6 @@ package com.example.smartorders.config;
 
 public class Config {
 
-    public static final String PAYPAL_CLIENT_ID = "AVKcuxalg9knU8dyM9TpcIvgrr5UgnwE6U-lkQgMuOl0vxVHrSoV1fPJLWMivc2mxlRb6G60TgINqsKI";
+    public static final String PAYPAL_CLIENT_ID = "AdGglhgptmqwSvZFCY6ElSV3QjcGmYjVlq3xCex3FGus-8KaeYX_PlV5uSYN9T4FscvZ_S1mvBjxYWo_";
 
 }
