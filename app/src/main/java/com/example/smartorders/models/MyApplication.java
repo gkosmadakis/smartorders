@@ -12,7 +12,7 @@ import androidx.multidex.MultiDexApplication;
 public class MyApplication extends MultiDexApplication {
     private String quantity;
     private String price;
-    private ArrayList foodNames = new ArrayList();
+    private ArrayList<String> foodNames = new ArrayList();
     private Map<String, Map<String, Double>> quantityNamePriceMap = new HashMap();
     private Map<String, String> instructionToFoodNameMap = new HashMap<>();
 
@@ -32,11 +32,11 @@ public class MyApplication extends MultiDexApplication {
         this.price = price;
     }
 
-    public ArrayList getFoodNames() {
+    public ArrayList<String> getFoodNames() {
         return foodNames;
     }
 
-    public void setFoodNames(ArrayList foodNames) {
+    public void setFoodNames(ArrayList<String> foodNames) {
         this.foodNames = foodNames;
     }
 
@@ -58,7 +58,6 @@ public class MyApplication extends MultiDexApplication {
 
     public boolean hasBasketItems() {
         boolean hasItems = false;
-
         if(quantity != "" && price != "" && !foodNames.isEmpty() && !quantityNamePriceMap.isEmpty()){
             hasItems = true;
         }
@@ -68,7 +67,6 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
         PaymentConfiguration.init(
                 getApplicationContext(),
                 "pk_test_rAfyYnFhIKSse7WRU4mrfDni00gkN8BQ67"

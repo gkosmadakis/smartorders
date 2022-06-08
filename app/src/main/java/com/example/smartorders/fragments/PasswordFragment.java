@@ -24,18 +24,14 @@ public class PasswordFragment extends Fragment {
             final View rootView = inflater.inflate(R.layout.password_fragment, container, false);
             Button passwordBtn = rootView.findViewById(R.id.buttonNext);
             final EditText password = rootView.findViewById(R.id.password);
-
             if (TextUtils.isEmpty(password.getText().toString()) || password.getText().toString().length() < 6 ){
                 password.setError("Please enter a password with 6 minimum characters");
             }
-            passwordBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((VerificationActivity) getActivity()).setCurrentItem(3, true);
-                    SingleInstanceUser authCredentialSingleInstance = SingleInstanceUser.getInstance();
-                    //set singleton object with appropriate values
-                    authCredentialSingleInstance.setPassword(password.getText().toString());
-                }
+            passwordBtn.setOnClickListener(view -> {
+                ((VerificationActivity) getActivity()).setCurrentItem(3, true);
+                SingleInstanceUser authCredentialSingleInstance = SingleInstanceUser.getInstance();
+                //set singleton object with appropriate values
+                authCredentialSingleInstance.setPassword(password.getText().toString());
             });
             return rootView;
         }

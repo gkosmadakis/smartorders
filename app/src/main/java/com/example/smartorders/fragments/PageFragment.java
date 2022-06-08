@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PageFragment extends Fragment {
 
     private Map<Integer, MenuData> modifiedReceivedListMap;
-    private RecyclerView listView;
     private String headerRequested;
 
     public static PageFragment newInstance(int page, String headerRequested,Map<Integer, MenuData> menuDetailsListMapRequested) {
@@ -44,20 +43,16 @@ public class PageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_page, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listView = view.findViewById(R.id.foodListView);
-
+        RecyclerView listView = view.findViewById(R.id.foodListView);
         TextView categoryText = view.findViewById(R.id.categoryText);
         /*Set the menu category from the keys of the map */
         categoryText.setText(headerRequested);
-
         final FoodListAdapter adapter = new FoodListAdapter(getContext(), new ArrayList<>(modifiedReceivedListMap.values()) );
         listView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

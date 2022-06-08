@@ -27,7 +27,6 @@ public class EnterOTPFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         View rootView = inflater.inflate(R.layout.enter_otp_fragment, container, false);
         Button otpBtn = rootView.findViewById(R.id.buttonNext);
         /*Hide some of the buttons/ textviews etc */
@@ -37,34 +36,25 @@ public class EnterOTPFragment extends Fragment {
         resendButton.setVisibility(View.GONE);
         OtpView otpView = rootView.findViewById(R.id.otp_view);
         otpView.setOtpCompletionListener(otp -> {
-
             Log.d("onOtpCompleted= TYPED", otp);
             verificationCode = otp;
         });
         otpView.setVisibility(View.GONE);
-
-
         enterCodeText.setVisibility(View.VISIBLE);
         otpView.setVisibility(View.VISIBLE);
         resendButton.setVisibility(View.VISIBLE);
-
-
         ((VerificationActivity) getActivity()).startPhoneNumberVerification(((VerificationActivity) getActivity()).getPhoneNumber());
-
         otpBtn.setOnClickListener(view -> {
             final String phoneNumberRetrieved = ((VerificationActivity) getActivity()).getPhoneNumber();
             authCredentialSingleInstance.setPhoneNumber(phoneNumberRetrieved);
             ((VerificationActivity) getActivity()).setCurrentItem(1, true);
             ((VerificationActivity) getActivity()).verifyPhoneNumberWithCode(((VerificationActivity) getActivity()).getmVerificationId(), verificationCode, phoneNumberRetrieved);
         });
-
         resendButton.setOnClickListener(view -> {
             final String phoneNumberRetrieved = ((VerificationActivity) getActivity()).getPhoneNumber();
             Toast.makeText(getContext(), "Resend Button Clicked", Toast.LENGTH_SHORT).show();
             ((VerificationActivity) getActivity()).resendVerificationCode(phoneNumberRetrieved, ((VerificationActivity) getActivity()).getmResendToken());
         });
-        //}
-
         return rootView;
     }
 

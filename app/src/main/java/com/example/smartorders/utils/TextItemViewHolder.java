@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smartorders.R;
 
 public class TextItemViewHolder extends RecyclerView.ViewHolder {
-    private TextView nameText;
-    private TextView subheaderText;
-    private TextView descriptionText;
-    private TextView priceText;
+    private final TextView nameText;
+    private final TextView subheaderText;
+    private final TextView descriptionText;
+    private final TextView priceText;
 
 
     public TextItemViewHolder(View itemView) {

@@ -2,31 +2,16 @@ package com.example.smartorders.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Token;
 
 public class SharedPreferencesUtil {
-    private String sharePrefsKey;
-    private Context mContext;
     private String email;
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private SharedPreferences sharedPrefs;
     private  SharedPreferences.Editor editor;
 
     public SharedPreferencesUtil(Context context, String sharePrefsKey) {
-        this.mContext = context;
-        this.sharePrefsKey = sharePrefsKey;
-        this.editor = editor;
-        sharedPrefs = context.getSharedPreferences(sharePrefsKey, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(sharePrefsKey, Context.MODE_PRIVATE);
         editor = sharedPrefs.edit();
     }
 

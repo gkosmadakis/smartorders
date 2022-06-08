@@ -4,32 +4,32 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.smartorders.interfaces.OnGetDataListener;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import com.example.smartorders.fragments.PageFragment;
+import com.example.smartorders.interfaces.OnGetDataListener;
 import com.example.smartorders.models.MenuData;
+import com.example.smartorders.service.MenuService;
 import com.example.smartorders.service.MenuServiceImpl;
 import com.example.smartorders.utils.MapUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-
 public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     private int PAGE_COUNT = 0;
-    private Context context;
+    private final Context context;
     private LinkedHashMap<String, Map<Integer, MenuData>> modifiedMenuDetailLinkedHashMap;
-    private  ProgressDialog mProgressDialog;
-    List<String> tabTitles;
+    private ProgressDialog mProgressDialog;
+    private List<String> tabTitles;
+    private final MenuService menuService = new MenuServiceImpl();
 
     public RestaurantPagerAdapter(@NonNull FragmentManager fm, Context context) {
         super(fm);
@@ -59,7 +59,7 @@ public class RestaurantPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     private void callFirebaseToGetMenu(String child) {
-        new MenuServiceImpl().getMenuFromFirebase(child, new OnGetDataListener() {
+        menuService.getMenuFromFirebase(child, new OnGetDataListener() {
             @Override
             public void onStart() {
                 //DO SOME THING WHEN START GET DATA HERE

@@ -23,15 +23,12 @@ import java.util.Objects;
 public class AddToBasketActivity extends AppCompatActivity {
 
     private TextView foodNameSelected;
-    private TextView subheaderFoodSelected;
     private TextView quantityText;
-    private MenuData menuDetailDataModelSentFromIntent;
-    private FloatingActionButton plusBtn, minusBtn;
+    private FloatingActionButton minusBtn;
     private Button addToBasketBtn;
     private int quantityAdded = 1;
     private int quantityToUpdate = 1;
     private double priceDouble;
-    private TextView removeFromBasketView;
     private String quantityToChange;
     private String foodNameToChange;
     private String priceToChange;
@@ -41,23 +38,21 @@ public class AddToBasketActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_basket);
-
         DecimalFormat df = new DecimalFormat("#.##");
         Intent intent = getIntent();
         foodNameSelected = findViewById(R.id.name);
-        subheaderFoodSelected = findViewById(R.id.subheader);
+        TextView subheaderFoodSelected = findViewById(R.id.subheader);
         instructionsEditText = findViewById(R.id.instructionsEditText);
         minusBtn = findViewById(R.id.minusBtn);
         minusBtn.setEnabled(false);
         quantityText = findViewById(R.id.quantityText);
-        plusBtn = findViewById(R.id.plusBtn);
-        removeFromBasketView = findViewById(R.id.removeFromBasketView);
+        FloatingActionButton plusBtn = findViewById(R.id.plusBtn);
+        TextView removeFromBasketView = findViewById(R.id.removeFromBasketView);
         removeFromBasketView.setVisibility(View.GONE);
         addToBasketBtn = findViewById(R.id.addToBasketBtn);
-
         if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
             /*Get the object from FoodListAdapter */
-            menuDetailDataModelSentFromIntent = (MenuData) intent.getSerializableExtra("selectedItem");
+            MenuData menuDetailDataModelSentFromIntent = (MenuData) intent.getSerializableExtra("selectedItem");
             priceDouble = getDoublePriceFromMenuDetailModel(menuDetailDataModelSentFromIntent.getPrice());
             /*Set the  name and the subheader texts */
             foodNameSelected.setText(menuDetailDataModelSentFromIntent.getName());
@@ -66,7 +61,6 @@ public class AddToBasketActivity extends AppCompatActivity {
 
             addToBasketBtn.setText("Add " + quantityAdded + " to basket " + "£" + priceDouble * quantityAdded);
         }
-
         if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
             removeFromBasketView.setVisibility(View.VISIBLE);
             foodNameToChange = intent.getStringExtra("foodNameToChange");
@@ -82,7 +76,6 @@ public class AddToBasketActivity extends AppCompatActivity {
             addToBasketBtn.setText("Update Basket "+"£"
                     +df.format(Double.parseDouble(priceToChange) *Integer.parseInt(quantityToChange)));
         }
-
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,50 +94,34 @@ public class AddToBasketActivity extends AppCompatActivity {
                 }
             }
         });
-
-        minusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (quantityAdded == 1 || quantityToUpdate == 1){
-                    minusBtn.setEnabled(false);
-                }
-                if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
-                    quantityAdded--;
-                    quantityText.setText(String.valueOf(quantityAdded));
-                    addToBasketBtn.setText("Add " + quantityAdded + " to basket "
-                            + "£" + df.format(priceDouble * quantityAdded));
-                }
-                if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
-                    quantityToUpdate--;
-                    quantityText.setText(String.valueOf(quantityToUpdate));
-                    addToBasketBtn.setText("Update Basket "+"£"
-                            +df.format(Double.parseDouble(priceToChange) *quantityToUpdate));
-                }
+        minusBtn.setOnClickListener(view -> {
+            if (quantityAdded == 1 || quantityToUpdate == 1){
+                minusBtn.setEnabled(false);
+            }
+            if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
+                quantityAdded--;
+                quantityText.setText(String.valueOf(quantityAdded));
+                addToBasketBtn.setText("Add " + quantityAdded + " to basket "
+                        + "£" + df.format(priceDouble * quantityAdded));
+            }
+            if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
+                quantityToUpdate--;
+                quantityText.setText(String.valueOf(quantityToUpdate));
+                addToBasketBtn.setText("Update Basket "+"£"
+                        +df.format(Double.parseDouble(priceToChange) *quantityToUpdate));
             }
         });
-
-        addToBasketBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
-                    addToBasketItems();
-                    finish();
-                }
-                if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
-                    updateBasket();
-                    finish();
-                }
+        addToBasketBtn.setOnClickListener(view -> {
+            if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
+                addToBasketItems();
+                finish();
+            }
+            if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
+                updateBasket();
+                finish();
             }
         });
-
-        removeFromBasketView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                removeItemFromBasket(quantityToChange, foodNameToChange, priceToChange);
-
-            }
-        });
-
+        removeFromBasketView.setOnClickListener(view -> removeItemFromBasket(quantityToChange, foodNameToChange, priceToChange));
     }// end of onCreate
 
     private void updateBasket() {
@@ -157,9 +134,7 @@ public class AddToBasketActivity extends AppCompatActivity {
         Double updatedTotalPrice = (Double.parseDouble(price) - Double.parseDouble(quantityToChange)
                     * Double.parseDouble(priceToChange)) + Double.parseDouble(priceToChange) * quantityToUpdate;
         int updatedQuantity = (Integer.parseInt(quantity) - Integer.parseInt(quantityToChange)) + quantityToUpdate;
-
         Map<String, Map<String,Double>> quantityNamePriceMap = app.getQuantityNamePriceMap();
-
         Map<String, Double> foodNameAndPriceMap = new HashMap();
         if (quantityNamePriceMap.get(quantityText.getText().toString()) == null) {
             /*Remove the existing entry */
@@ -174,7 +149,6 @@ public class AddToBasketActivity extends AppCompatActivity {
             Objects.requireNonNull(quantityNamePriceMap.get(quantityText.getText().toString()))
                     .put(foodNameSelected.getText().toString(),Integer.parseInt(quantityText.getText().toString())*Double.parseDouble(priceToChange));
         }
-
         app.setQuantityNamePriceMap(quantityNamePriceMap);
         app.setPrice(String.valueOf(updatedTotalPrice));
         app.setQuantity(String.valueOf(updatedQuantity));
@@ -203,7 +177,6 @@ public class AddToBasketActivity extends AppCompatActivity {
         app.setPrice(String.valueOf(updatedPrice));
         /*Update quantityNamePriceMap */
         app.getQuantityNamePriceMap().get(quantityToRemove).remove(foodNameToRemove);
-
         /* if the basket is empty navigate to Restaurant Activity and clear all the other activities */
         if(!app.hasBasketItems()){
             Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
@@ -213,17 +186,16 @@ public class AddToBasketActivity extends AppCompatActivity {
         else{
             finish();
         }
-
     }
 
     private void addToBasketItems() {
         /*Would be good to write a Junit for this method */
         MyApplication app = (MyApplication) getApplicationContext();
         /*if the basket has already other items then update total price and quantity that is sent to Restaurant/HomeActivities */
-        ArrayList foodNamesAlreadyInBasket = app.getFoodNames();
+        ArrayList<String> foodNamesAlreadyInBasket = app.getFoodNames();
         Map<String, Map<String,Double>> quantityNamePriceMap = app.getQuantityNamePriceMap();
         Map<String, String> instructionToFoodNameMap = app.getInstructionToFoodNameMap();
-        Double totalPrice = 0.0;
+        double totalPrice = 0.0;
         if (app.hasBasketItems()){
             String price = app.getPrice();
             String quantity = app.getQuantity();
@@ -263,7 +235,6 @@ public class AddToBasketActivity extends AppCompatActivity {
         /*Here I assume that the string price will always be £4.5 i.e pound symbol will always be first and then the price */
         String [] priceParts = price.split("£");
         priceDouble = Double.parseDouble(priceParts[1]);
-
         return priceDouble;
     }
 }

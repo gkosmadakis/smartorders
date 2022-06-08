@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class SearchViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public SearchViewModel() {
         mText = new MutableLiveData<>();

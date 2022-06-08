@@ -21,7 +21,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[] values;
     boolean notifyDataSetChangedCalled;
-    private String [] savedPlaces;
+    private final String [] savedPlaces;
 
     public MySimpleArrayAdapter(Context context, String[] values,String [] savedPlaces) {
         super(context, R.layout.my_list, values);
@@ -39,10 +39,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
         // Convert String Array to List
         List<String> list = Arrays.asList(values);
         if (context instanceof FindAddressActivity){
-
            rowView = inflater.inflate(R.layout.address_fields, parent, false);
            EditText editText = rowView.findViewById(R.id.addressListItem);
-
            if (notifyDataSetChangedCalled){
                editText.setText(values[position]);
                editText.setHint(list.get(position));
@@ -50,9 +48,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
            else {
                editText.setHint(list.get(position));
            }
-
         }
-
         else if(context instanceof SettingsActivity) {
             rowView = inflater.inflate(R.layout.my_list, parent, false);
             TextView textView =  rowView.findViewById(R.id.textView);
@@ -67,9 +63,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
             rowView = inflater.inflate(R.layout.payment_items_list, parent, false);
             TextView textView =  rowView.findViewById(R.id.last4DisigitsView);
             imageView =  rowView.findViewById(R.id.cardIcon);
-
             textView.setText(values[position]);
-
         }
         else{
             rowView = inflater.inflate(R.layout.settings_items_list, parent, false);
@@ -116,13 +110,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
             case "Diners Club":
             imageView.setImageResource(R.drawable.dinersclub);
                 break;
-
         }
         if(position == list.size()){
             notifyDataSetChangedCalled = false;
         }
         return rowView;
     }
+
     public void notifyDataSetChangedWrapper(){
         notifyDataSetChangedCalled = true;
         notifyDataSetChanged();

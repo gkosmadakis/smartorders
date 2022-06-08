@@ -25,13 +25,11 @@ import androidx.viewpager.widget.ViewPager;
 
 public class OrdersFragment extends Fragment {
 
-    private OrdersViewModel notificationsViewModel;
     private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(OrdersViewModel.class);
+        OrdersViewModel notificationsViewModel = ViewModelProviders.of(this).get(OrdersViewModel.class);
         root = inflater.inflate(R.layout.fragment_orders, container, false);
         final TextView textView = root.findViewById(R.id.text_orders);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -40,18 +38,14 @@ public class OrdersFragment extends Fragment {
                 textView.setText(s);
             }
         });
-
         return root;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         MyTabPagerAdapter tabPager = new MyTabPagerAdapter(getChildFragmentManager());
-
         ViewPager viewPager = getView().findViewById(R.id.viewpager);
         viewPager.setAdapter(tabPager);
-
         ((HomeActivity)getActivity()).getSupportActionBar().hide();
         // Display a tab for each Fragment displayed in ViewPager.
         TabLayout tabLayout = root.findViewById(R.id.tabs);
@@ -60,7 +54,6 @@ public class OrdersFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-
         MyTabPagerAdapter adapter = new MyTabPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new PastOrdersFragment(), "Past Orders");
         adapter.addFragment(new UpcomingOrdersFragment(), "Upcoming");
@@ -68,10 +61,8 @@ public class OrdersFragment extends Fragment {
     }
 
     static class MyTabPagerAdapter extends FragmentPagerAdapter {
-
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-
         MyTabPagerAdapter(FragmentManager fm) {
             super(fm);
         }

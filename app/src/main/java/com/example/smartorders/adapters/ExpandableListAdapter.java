@@ -17,11 +17,10 @@ import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private final Context _context;
+    private final List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
-    private EditText txtListChild;
+    private final HashMap<String, List<String>> _listDataChild;
     public static HashMap<String,String> arrayList;
     boolean notifyDataSetChangedCalled;
 
@@ -46,15 +45,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
         final String childText = (String) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.delivery_options_child, null);
         }
-
-        txtListChild = convertView.findViewById(R.id.instructionsField);
+        EditText txtListChild = convertView.findViewById(R.id.instructionsField);
         if (notifyDataSetChangedCalled) {
             if (childText != "") {
                 txtListChild.setText(childText);
@@ -63,17 +60,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         else {
             txtListChild.setHint(childText);
         }
-
-        txtListChild.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                    String instruction = ((EditText) view).getText().toString();
-
-                    arrayList = new HashMap<String, String>();
-                    System.out.println("Instruction is " + instruction);
-                    arrayList.put(String.valueOf(groupPosition), instruction);
-                }
+        txtListChild.setOnFocusChangeListener((view, b) -> {
+            if (!b) {
+                String instruction = ((EditText) view).getText().toString();
+                arrayList = new HashMap<String, String>();
+                System.out.println("Instruction is " + instruction);
+                arrayList.put(String.valueOf(groupPosition), instruction);
             }
         });
         return convertView;
@@ -109,7 +101,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.delivery_options_list, null);
         }
-
         ImageView img_selection = convertView.findViewById(R.id.tickedIcon);
         if (isExpanded) {
             int imageResourceId = R.drawable.baseline_done_black_18dp;
@@ -118,7 +109,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             img_selection.setVisibility(View.GONE);
         }
-
         TextView lblListHeader = convertView.findViewById(R.id.deliveryOptionsView);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);

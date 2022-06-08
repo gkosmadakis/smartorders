@@ -19,24 +19,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CheckoutOrderItemsAdapter extends RecyclerView.Adapter<CheckoutOrderItemsAdapter.MyViewHolder> {
-    private LayoutInflater inflater;
-    private Context context;
-    private List<CheckoutActivity.OrderItemsListHelper> orderItemsList;
+    private final LayoutInflater inflater;
+    private final Context context;
+    private final List<CheckoutActivity.OrderItemsListHelper> orderItemsList;
 
     public CheckoutOrderItemsAdapter(Context context,List<CheckoutActivity.OrderItemsListHelper> orderItemsList) {
         inflater = LayoutInflater.from(context);
         this.context = context;
-        this.orderItemsList=orderItemsList;
-
+        this.orderItemsList = orderItemsList;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_items_on_checkout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-
-        return holder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -45,21 +42,17 @@ public class CheckoutOrderItemsAdapter extends RecyclerView.Adapter<CheckoutOrde
         holder.quantity.setText(orderItemsListHelper.getQuantity()+"X");
         holder.foodName.setText(orderItemsListHelper.getFoodName());
         holder.price.setText("£"+orderItemsListHelper.getPrice());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context,"CheckoutOrderItemsAdapter " +orderItemsListHelper.getQuantity()+
-                        orderItemsListHelper.getFoodName()+orderItemsListHelper.getPrice(),Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(context, AddToBasketActivity.class);
-                i.putExtra("quantityToChange", (Serializable) orderItemsListHelper.getQuantity());
-                i.putExtra("foodNameToChange", (Serializable) orderItemsListHelper.getFoodName());
-                Double priceOfOneItem = Double.parseDouble(orderItemsListHelper.getPrice())/
-                        Integer.parseInt(orderItemsListHelper.getQuantity());
-                i.putExtra("priceToChange", (Serializable) String.valueOf(priceOfOneItem));
-                i.putExtra("Class","CheckoutOrderItemsAdapter");
-                context.startActivity(i);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Toast.makeText(context,"CheckoutOrderItemsAdapter " +orderItemsListHelper.getQuantity()+
+                    orderItemsListHelper.getFoodName()+orderItemsListHelper.getPrice(),Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(context, AddToBasketActivity.class);
+            i.putExtra("quantityToChange", (Serializable) orderItemsListHelper.getQuantity());
+            i.putExtra("foodNameToChange", (Serializable) orderItemsListHelper.getFoodName());
+            Double priceOfOneItem = Double.parseDouble(orderItemsListHelper.getPrice())/
+                    Integer.parseInt(orderItemsListHelper.getQuantity());
+            i.putExtra("priceToChange", (Serializable) String.valueOf(priceOfOneItem));
+            i.putExtra("Class","CheckoutOrderItemsAdapter");
+            context.startActivity(i);
         });
     }
 
@@ -68,7 +61,7 @@ public class CheckoutOrderItemsAdapter extends RecyclerView.Adapter<CheckoutOrde
         return orderItemsList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView quantity;
         TextView foodName;
         TextView price;

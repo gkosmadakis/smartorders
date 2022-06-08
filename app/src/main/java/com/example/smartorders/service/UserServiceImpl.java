@@ -1,6 +1,8 @@
 package com.example.smartorders.service;
 
 import android.content.Context;
+import android.content.Intent;
+import android.widget.EditText;
 
 import com.example.smartorders.repository.UserRepository;
 import com.example.smartorders.models.SingleInstanceUser;
@@ -9,9 +11,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.PhoneAuthCredential;
 
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository = new UserRepositoryImpl();
-
 
     @Override
     public void linkUserWithPhoneCredential(AuthCredential credential, Context context) {
@@ -31,5 +31,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signInWithPhoneAuthCredential(PhoneAuthCredential credential, Context context) {
         userRepository.signInWithPhoneAuthCredential(credential, context);
+    }
+
+    @Override
+    public void updateUserEmailInFirebase(Context context, String newEmail) {
+        userRepository.updateUserEmailInFirebase(context, newEmail);
+    }
+
+    @Override
+    public void updateUserPhoneInFirebase(Context context, Intent data, EditText phoneNumberField) {
+        userRepository.updateUserPhoneInFirebase(context, data, phoneNumberField);
+    }
+
+    @Override
+    public void updateUserFirstOrLastName(Context context, String childKeyInDB, String childValueInDB, String sharedPrefsKey, String updateTag) {
+        userRepository.updateUserFirstOrLastName(context, childKeyInDB, childValueInDB, sharedPrefsKey, updateTag);
+    }
+
+    @Override
+    public void updateUserPassword(Context context, String passwordExisting, String passwordNew) {
+        userRepository.updateUserPassword(context, passwordExisting, passwordNew);
+    }
+
+    @Override
+    public void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential) {
+        userRepository.updateUserPhoneWithCredential(context, credential);
+    }
+
+    @Override
+    public void deleteUserFromFirebase(Context context) {
+        userRepository.deleteUserFromFirebase(context);
     }
 }

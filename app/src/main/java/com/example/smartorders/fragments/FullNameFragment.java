@@ -35,7 +35,6 @@ public class FullNameFragment extends Fragment {
         else if(TextUtils.isEmpty(lastName.getText().toString())){
             lastName.setError("Please enter your last name");
         }
-
         firstAndLastNameBtn.setOnClickListener(view -> {
             ((VerificationActivity) getActivity()).setCurrentItem(4, true);
             UserServiceImpl userService = new UserServiceImpl();
@@ -48,7 +47,6 @@ public class FullNameFragment extends Fragment {
             authCredential.setFirstName(firstName.getText().toString());
             authCredential.setLastName(lastName.getText().toString());
         });
-
         return rootView;
     }
 

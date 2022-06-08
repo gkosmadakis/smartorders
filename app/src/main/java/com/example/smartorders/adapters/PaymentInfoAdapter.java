@@ -14,12 +14,11 @@ import java.util.LinkedHashMap;
 
 public class PaymentInfoAdapter extends BaseAdapter {
     private final Context context;
-    private LinkedHashMap<String, String> cardData;
-    private String[] mKeys;
+    private final LinkedHashMap<String, String> cardData;
+    private final String[] mKeys;
 
     public PaymentInfoAdapter(Context context, LinkedHashMap<String, String> data) {
         this.context = context;
-        //super(context, R.layout.my_list, values);
         cardData  = data;
         mKeys = cardData.keySet().toArray(new String[data.size()]);
     }
@@ -47,13 +46,10 @@ public class PaymentInfoAdapter extends BaseAdapter {
        rowView = inflater.inflate(R.layout.payment_items_list, parent, false);
        TextView textView =  rowView.findViewById(R.id.last4DisigitsView);
        imageView =  rowView.findViewById(R.id.cardIcon);
-
        textView.setText("\u2022\u2022\u2022\u2022 "+mKeys[position]);
-
         // Change the icons
         String s = getItem(position).toString();
         switch (s){
-
             case "MasterCard":
             imageView.setImageResource(R.drawable.mastercard);
                 break;
@@ -71,7 +67,6 @@ public class PaymentInfoAdapter extends BaseAdapter {
                 break;
 
         }
-
         return rowView;
     }
 

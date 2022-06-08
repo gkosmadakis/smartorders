@@ -29,14 +29,12 @@ public class EditAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account);
-
         /*Fields*/
         firstNameField = findViewById(R.id.firstNameField);
         lastNameField = findViewById(R.id.surnameField);
         phoneNumberField = findViewById(R.id.phoneNumField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
-
         /*Get first name and last name from shared preferences and use it in the fullname view*/
         SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(this);
         firstName = prefers.getString("firstName", "");
@@ -50,61 +48,35 @@ public class EditAccountActivity extends AppCompatActivity {
         phoneNumberField.setText(phoneNumber);
         emailField.setText(email);
         passwordField.setText(password);
-
-        firstNameField.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                firstNameIntent = "firstNameIntent";
-                Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
-                intent.putExtra("intentLayout", firstNameIntent);
-                startActivityForResult(intent, requestCodeFirstName);
-
-            }
-
+        firstNameField.setOnClickListener(v -> {
+            firstNameIntent = "firstNameIntent";
+            Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
+            intent.putExtra("intentLayout", firstNameIntent);
+            startActivityForResult(intent, requestCodeFirstName);
         });
-        lastNameField.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                lastNameIntent = "surNameIntent";
-                Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
-                intent.putExtra("intentLayout", lastNameIntent);
-                startActivityForResult(intent,requestCodeLastName);
-
-            }
-
+        lastNameField.setOnClickListener(v -> {
+            lastNameIntent = "surNameIntent";
+            Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
+            intent.putExtra("intentLayout", lastNameIntent);
+            startActivityForResult(intent,requestCodeLastName);
         });
-        phoneNumberField.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                phoneNumberIntent = "phoneNumberIntent";
-                Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
-                intent.putExtra("intentLayout", phoneNumberIntent);
-                startActivityForResult(intent,requestCodePhone);
-
-            }
-
+        phoneNumberField.setOnClickListener(v -> {
+            phoneNumberIntent = "phoneNumberIntent";
+            Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
+            intent.putExtra("intentLayout", phoneNumberIntent);
+            startActivityForResult(intent,requestCodePhone);
         });
-        emailField.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                emailIntent = "emailIntent";
-                Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
-                intent.putExtra("intentLayout", emailIntent);
-                startActivityForResult(intent,requestCodeEmail);
-
-            }
-
+        emailField.setOnClickListener(v -> {
+            emailIntent = "emailIntent";
+            Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
+            intent.putExtra("intentLayout", emailIntent);
+            startActivityForResult(intent,requestCodeEmail);
         });
-        passwordField.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                passwordIntent = "passwordIntent";
-                Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
-                intent.putExtra("intentLayout", passwordIntent);
-                startActivityForResult(intent,requestCodePassword);
-
-            }
-
+        passwordField.setOnClickListener(v -> {
+            passwordIntent = "passwordIntent";
+            Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);
+            intent.putExtra("intentLayout", passwordIntent);
+            startActivityForResult(intent,requestCodePassword);
         });
     }// end of onCreate
 
@@ -139,4 +111,5 @@ public class EditAccountActivity extends AppCompatActivity {
             snackbar.show();
         }
     }
+
 }

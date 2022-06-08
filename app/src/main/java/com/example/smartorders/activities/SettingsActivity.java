@@ -4,30 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.smartorders.adapters.MySimpleArrayAdapter;
-import com.example.smartorders.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.example.smartorders.R;
+import com.example.smartorders.adapters.MySimpleArrayAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SettingsActivity extends AppCompatActivity {
 
-    private TextView fullNameView,editAccountLink,signOutLink;
-    private String firstName,lastName;
     private FirebaseAuth mAuth;
     private ListView listView;
     private String[] listItem;
-    private String homePlace;
-    private String workPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,63 +36,47 @@ public class SettingsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         mAuth = FirebaseAuth.getInstance();
-
         /*Views*/
-        fullNameView = findViewById(R.id.fullNameView);
-        editAccountLink = findViewById(R.id.editAccountLink);
-        signOutLink = findViewById(R.id.signOutLink);
+        TextView fullNameView = findViewById(R.id.fullNameView);
+        TextView editAccountLink = findViewById(R.id.editAccountLink);
+        TextView signOutLink = findViewById(R.id.signOutLink);
         /*Get first name and last name from shared preferences and use it in the fullname view*/
         SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(this);
-        firstName = prefers.getString("firstName", "");
-        lastName = prefers.getString("lastName","");
-
+        String firstName = prefers.getString("firstName", "");
+        String lastName = prefers.getString("lastName", "");
         fullNameView.setText(firstName + " "+ lastName);
-
         listView = findViewById(R.id.placesListView);
         listItem = getResources().getStringArray(R.array.array_on_saved_places);
-
         final MySimpleArrayAdapter adapter = getSavedPlacesAndSetAdapter();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                String value= adapter.getItem(position);
-                Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
-                switch (value) {
-                    case "Home":
-                        Intent intentHome = new Intent(getApplicationContext(), FindAddressActivity.class);
-                        intentHome.putExtra("savedPlace", "home");
-                        startActivity(intentHome);
-                        break;
-                    case "Work":
-                        Intent intentWork = new Intent(getApplicationContext(), FindAddressActivity.class);
-                        intentWork.putExtra("savedPlace", "work");
-                        startActivity(intentWork);
-                        break;
-                }
+        listView.setOnItemClickListener((adapterView, view, position, l) -> {
+            String value= adapter.getItem(position);
+            Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
+            switch (value) {
+                case "Home":
+                    Intent intentHome = new Intent(getApplicationContext(), FindAddressActivity.class);
+                    intentHome.putExtra("savedPlace", "home");
+                    startActivity(intentHome);
+                    break;
+                case "Work":
+                    Intent intentWork = new Intent(getApplicationContext(), FindAddressActivity.class);
+                    intentWork.putExtra("savedPlace", "work");
+                    startActivity(intentWork);
+                    break;
             }
         });
-
         /*Click listener for the edit account link*/
-        editAccountLink.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent(getApplicationContext(), EditAccountActivity.class);
-                startActivity(intent);
-            }
+        editAccountLink.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), EditAccountActivity.class);
+            startActivity(intent);
         });
-
-        signOutLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-                Intent i = new Intent(getApplicationContext(), GetStartedActivity.class);
-                startActivity(i);
-                // close this activity
-                finish();
-            }
+        signOutLink.setOnClickListener(view -> {
+            signOut();
+            Intent i = new Intent(getApplicationContext(), GetStartedActivity.class);
+            startActivity(i);
+            // close this activity
+            finish();
         });
     }
-
 
     private void signOut() {
         mAuth.signOut();
@@ -113,9 +91,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     private MySimpleArrayAdapter getSavedPlacesAndSetAdapter() {
         SharedPreferences sp = getSharedPreferences("home", Context.MODE_PRIVATE);
-        homePlace = sp.getString("placeName","");
+        String homePlace = sp.getString("placeName", "");
         SharedPreferences sprefs = getSharedPreferences("work", Context.MODE_PRIVATE);
-        workPlace = sprefs.getString("placeName","");
+        String workPlace = sprefs.getString("placeName", "");
         String [] savedPlacesArray = new String[2];
         if(homePlace != ""){
             savedPlacesArray[0] = homePlace;

@@ -20,13 +20,10 @@ public class PaymentDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_details);
-
         txtId = findViewById(R.id.txtId);
         txtAmount = findViewById(R.id.txtAmount);
         txtStatus = findViewById(R.id.txtStatus);
-
         Intent intent = getIntent();
-
         try {
             JSONObject jsonObject = new JSONObject(Objects.requireNonNull(intent.getStringExtra("PaymentDetails")));
             showDetails(jsonObject.getJSONObject("response"),intent.getStringExtra("PaymentAmount"));

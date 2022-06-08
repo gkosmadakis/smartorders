@@ -36,7 +36,6 @@ public class AcceptTermsFragment extends Fragment {
                 Intent intent = new Intent(view.getContext(), HomeActivity.class);
                 startActivity(intent);
             });
-
             return rootView;
         }
     }

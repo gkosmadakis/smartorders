@@ -19,10 +19,7 @@ import androidx.preference.PreferenceManager;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private String firstName, lastName;
     private Button viewBasketBtn;
-    private String quantityAdded;
-    private String price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,29 +34,19 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-        /*Get first name and last name from shared preferences and use it in the fullname view*/
         SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(this);
-        firstName = prefers.getString("firstName", "");
-        lastName = prefers.getString("lastName","");
-
         viewBasketBtn = findViewById(R.id.viewBasketBtnHome);
         viewBasketBtn.setVisibility(View.GONE);
-
-        viewBasketBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*Get total price of goods here */
-                MyApplication app = (MyApplication) getApplicationContext();
-                if(app.hasBasketItems()) {
-                    String totalPrice = app.getPrice();
-                    Intent intent = new Intent(view.getContext(), CheckoutActivity.class);
-                    intent.putExtra("totalPrice",totalPrice);
-                    startActivity(intent);
-                }
+        viewBasketBtn.setOnClickListener(view -> {
+            /*Get total price of goods here */
+            MyApplication app = (MyApplication) getApplicationContext();
+            if(app.hasBasketItems()) {
+                String totalPrice = app.getPrice();
+                Intent intent = new Intent(view.getContext(), CheckoutActivity.class);
+                intent.putExtra("totalPrice",totalPrice);
+                startActivity(intent);
             }
         });
-
     }// end of onCreate
 
     public void setActionBarTitle(String title) {

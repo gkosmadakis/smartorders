@@ -29,12 +29,9 @@ public class EnterPhoneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_phone);
-
         Button startVerificationBtn = findViewById(R.id.startVerificationButton);
         phoneField = findViewById(R.id.phoneNumberField);
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-
         mAuthListener = firebaseAuth -> Log.d(TAG, "mAuthListener called "+firebaseAuth.getCurrentUser() + "mAuth " + mAuth.getCurrentUser());
         /* get the phone as soon as the user has finished typing it */
         phoneField.addTextChangedListener(new TextWatcher() {
@@ -53,7 +50,6 @@ public class EnterPhoneActivity extends AppCompatActivity {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            // TODO: do what you need here (refresh list)
                             phoneNumber = phoneField.getText().toString();
                             Log.d(TAG, "User finished typing");
                         }
@@ -62,7 +58,6 @@ public class EnterPhoneActivity extends AppCompatActivity {
             }
         });
         startVerificationBtn.setOnClickListener(view -> {
-
             Intent i = new Intent(EnterPhoneActivity.this, VerificationActivity.class);
             if (phoneField.getText().toString().length() > 0) {
                 i.putExtra("phoneNumber", phoneNumber);

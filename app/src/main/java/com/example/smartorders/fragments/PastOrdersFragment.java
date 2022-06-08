@@ -7,33 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.smartorders.interfaces.OnGetDataListenerPastOrders;
-import com.example.smartorders.adapters.PastOrderItemsAdapter;
-import com.example.smartorders.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartorders.R;
+import com.example.smartorders.adapters.PastOrderItemsAdapter;
+import com.example.smartorders.interfaces.OnGetDataListenerPastOrders;
+import com.example.smartorders.service.OrdersService;
+import com.example.smartorders.service.OrdersServiceImpl;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
+import java.util.List;
+import java.util.Map;
+
 
 public class PastOrdersFragment extends Fragment {
     private RecyclerView recyclerViewPastOrders;
-    private View rootView;
-    private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
     private  ProgressDialog mProgressDialog;
+    private final OrdersService ordersService = new OrdersServiceImpl();
 
     public PastOrdersFragment() {
         // Required empty public constructor
@@ -42,19 +35,15 @@ public class PastOrdersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
-        rootView = inflater.inflate(R.layout.past_orders_fragment,container,false);
-
+        View rootView = inflater.inflate(R.layout.past_orders_fragment, container, false);
         recyclerViewPastOrders = rootView.findViewById(R.id.recycleViewPastOrders);
-
-        getPastOrderFromFirebase( new OnGetDataListenerPastOrders() {
+        getPastOrderFromFirebase(new OnGetDataListenerPastOrders() {
             @Override
             public void onStart() {
                 //DO SOME THING WHEN START GET DATA HERE
@@ -134,50 +123,7 @@ public class PastOrdersFragment extends Fragment {
     }
 
     private void getPastOrderFromFirebase(final OnGetDataListenerPastOrders listener) {
-        listener.onStart();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userDetails = mDatabase.child("Users").child(mAuth.getUid()).child("Orders");
-        ArrayList<PastOrderItemsListHelper> pastOrderItemsComponents = new ArrayList<>();
-        userDetails.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String orderId = "";
-                for (DataSnapshot orderID : dataSnapshot.getChildren()) {
-                    orderId = orderID.getKey();
-                    Map<String, String> pastOrderItemsNameToQuantity = new HashMap<>();
-                    String totalPrice = "";
-                    for (DataSnapshot orderDetails : orderID.getChildren()) {
-                        if(orderDetails.getKey().equals("TotalPrice")) {
-                            totalPrice = orderDetails.getValue(String.class);
-                        }
-                        else if(orderDetails.getKey().equals("Items")){
-                            for (DataSnapshot itemsLength : orderDetails.getChildren()) {
-                                String itemName = "";
-                                String itemQuantity = "";
-                                for (DataSnapshot itemDetail : itemsLength.getChildren()) {
-                                    if(itemDetail.getKey().equals("name")){
-                                        itemName = itemDetail.getValue(String.class);
-                                    }
-                                    if(itemDetail.getKey().equals("quantity")){
-                                        itemQuantity = itemDetail.getValue(String.class);
-                                    }
-                                }
-                                pastOrderItemsNameToQuantity.put(itemName,itemQuantity);
-                            }
-                        }
-                    }
-                    PastOrderItemsListHelper itemObject = new PastOrderItemsListHelper("Your delivery by Greek Artisan Pastries",totalPrice,
-                            R.drawable.greek_artisan_pastries_photo,"Order completed",orderId, pastOrderItemsNameToQuantity);
-                    pastOrderItemsComponents.add(itemObject);
-                }
-                listener.onSuccess(dataSnapshot,pastOrderItemsComponents);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listener.onFailed(databaseError);
-            }
-        });
+        ordersService.retrievePastOrderFromFirebase(listener);
     }
 
     public static class PastOrderItemsListHelper {

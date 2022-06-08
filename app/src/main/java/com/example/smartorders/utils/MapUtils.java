@@ -12,7 +12,6 @@ public class MapUtils {
     }
 
     public String convertCamelCaseToHumanRead(String text){
-
         return text.replaceAll(
                 String.format("%s|%s|%s",
                         "(?<=[A-Z])(?=[A-Z][a-z])",
@@ -27,7 +26,6 @@ public class MapUtils {
         MapUtils mapUtils = new MapUtils();
         Map<String, Map<Integer, MenuData>> modifiedMenuDetailHashMap = new HashMap<>();
         Iterator<Map.Entry<String, Map<Integer, MenuData>>> iterator = menuDetailMap.entrySet().iterator();
-
         while (iterator.hasNext()) {
             Map.Entry<String, Map<Integer, MenuData>> entry = iterator.next();
             String key = entry.getKey();
@@ -39,7 +37,6 @@ public class MapUtils {
         Map<Integer, MenuData> pickedForYou = modifiedMenuDetailHashMap.remove("Picked For You");
         modifiedMenuDetailLinkedHashMap.put("Picked For You", pickedForYou);
         modifiedMenuDetailLinkedHashMap.putAll(modifiedMenuDetailHashMap);
-
         return modifiedMenuDetailLinkedHashMap;
     }
 }

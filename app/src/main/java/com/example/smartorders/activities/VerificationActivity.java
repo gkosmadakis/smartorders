@@ -39,13 +39,12 @@ public class VerificationActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private static final String TAG = "VerificationActivity";
     private String phoneNumber;
-    private UserService userService = new UserServiceImpl();
+    private final UserService userService = new UserServiceImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
-
         // Restore instance state
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
@@ -54,12 +53,9 @@ public class VerificationActivity extends AppCompatActivity {
         phoneNumber = intent.getStringExtra("phoneNumber");
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
-
         // Assign views
         mPhoneNumberField = findViewById(R.id.phoneNumberField);
-
         mAuth = FirebaseAuth.getInstance();
-
         mAuthListener = firebaseAuth -> {
             if (firebaseAuth.getCurrentUser() != null) {
                 Log.d(TAG, "AuthListener USER exists "+firebaseAuth.getCurrentUser());
@@ -186,7 +182,6 @@ public class VerificationActivity extends AppCompatActivity {
                 this,               // Activity (for callback binding)
                 mCallbacks,         // OnVerificationStateChangedCallbacks
                 token);             // ForceResendingToken from callbacks
-
         Toast.makeText(this,"resendVerificationCode", Toast.LENGTH_LONG).show();
     }
 

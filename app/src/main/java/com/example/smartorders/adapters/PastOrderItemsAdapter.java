@@ -21,9 +21,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PastOrderItemsAdapter extends RecyclerView.Adapter<PastOrderItemsAdapter.MyViewHolder> {
-    private LayoutInflater inflater;
-    private Context context;
-    private List<PastOrdersFragment.PastOrderItemsListHelper> orderItemsList;
+    private final LayoutInflater inflater;
+    private final Context context;
+    private final List<PastOrdersFragment.PastOrderItemsListHelper> orderItemsList;
 
     public PastOrderItemsAdapter(Context context,List<PastOrdersFragment.PastOrderItemsListHelper> orderItemsList) {
         inflater = LayoutInflater.from(context);
@@ -35,7 +35,6 @@ public class PastOrderItemsAdapter extends RecyclerView.Adapter<PastOrderItemsAd
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_items_on_past_orders, parent, false);
-
         return new MyViewHolder(view);
     }
 
@@ -48,38 +47,31 @@ public class PastOrderItemsAdapter extends RecyclerView.Adapter<PastOrderItemsAd
         holder.imageViewLogo.setImageResource(orderItemsListHelper.getImageView());
         holder.orderCompletedTitle.setText(orderItemsListHelper.getOrderCompletedTitle());
         holder.orderID.setText(orderItemsListHelper.getOrderId());
-
         Map<String,String> pastOrderItemsNameToQuantity = orderItemsListHelper.getPastOrderItemsNameToQuantity();
         ArrayList<PastOrderListOfItemsAdapter.PastOrderItemModel> helperList = new ArrayList<>();
-
         for(Map.Entry<String,String> entry : pastOrderItemsNameToQuantity.entrySet()){
             PastOrderListOfItemsAdapter.PastOrderItemModel orderItemsHelper = new PastOrderListOfItemsAdapter.PastOrderItemModel();
             orderItemsHelper.setPastOrderItemName(entry.getKey());
             orderItemsHelper.setPastOrderItemQuantity(entry.getValue());
             helperList.add(orderItemsHelper);
         }
-
         PastOrderListOfItemsAdapter adapter = new PastOrderListOfItemsAdapter(context,helperList);
         holder.orderItems.setAdapter(adapter);
-        holder.orderItems.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
+        holder.orderItems.setOnTouchListener((v, event) -> {
+            int action = event.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    // Disallow ScrollView to intercept touch events.
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    // Allow ScrollView to intercept touch events.
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
             }
+            // Handle ListView touch events.
+            v.onTouchEvent(event);
+            return true;
         });
     }
 
@@ -88,7 +80,7 @@ public class PastOrderItemsAdapter extends RecyclerView.Adapter<PastOrderItemsAd
         return orderItemsList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView deliveryTitle;
         TextView totalPrice;
         ImageView imageViewLogo;

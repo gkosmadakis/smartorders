@@ -20,15 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartorders.R;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -43,10 +40,9 @@ import java.util.concurrent.TimeoutException;
 public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoCompleteAdapter.PredictionHolder> implements Filterable {
     private static final String TAG = "PlacesAutoAdapter";
     private ArrayList<PlaceAutocomplete> mResultList = new ArrayList<>();
-
-    private Context mContext;
-    private CharacterStyle STYLE_BOLD;
-    private CharacterStyle STYLE_NORMAL;
+    private final Context mContext;
+    private final CharacterStyle STYLE_BOLD;
+    private final CharacterStyle STYLE_NORMAL;
     private final PlacesClient placesClient;
     private ClickListener clickListener;
 
@@ -55,10 +51,6 @@ public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoComp
         STYLE_BOLD = new StyleSpan(Typeface.BOLD);
         STYLE_NORMAL = new StyleSpan(Typeface.NORMAL);
         placesClient = com.google.android.libraries.places.api.Places.createClient(context);
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
     public interface ClickListener {
@@ -103,13 +95,10 @@ public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoComp
 
 
     private ArrayList<PlaceAutocomplete> getPredictions(CharSequence constraint) {
-
         final ArrayList<PlaceAutocomplete> resultList = new ArrayList<>();
-
         // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
         // and once again when the user makes a selection (for example when calling fetchPlace()).
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-
         //https://gist.github.com/graydon/11198540
         // Use the builder to create a FindAutocompletePredictionsRequest.
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
@@ -120,9 +109,7 @@ public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoComp
                 .setSessionToken(token)
                 .setQuery(constraint.toString())
                 .build();
-
         Task<FindAutocompletePredictionsResponse> autocompletePredictions = placesClient.findAutocompletePredictions(request);
-
         // This method should have been called off the main UI thread. Block and wait for at most
         // 60s for a result from the API.
         try {
@@ -130,7 +117,6 @@ public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoComp
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
             e.printStackTrace();
         }
-
         if (autocompletePredictions.isSuccessful()) {
             FindAutocompletePredictionsResponse findAutocompletePredictionsResponse = autocompletePredictions.getResult();
             if (findAutocompletePredictionsResponse != null)
@@ -138,12 +124,10 @@ public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoComp
                     Log.i(TAG, prediction.getPlaceId());
                     resultList.add(new PlaceAutocomplete(prediction.getPlaceId(), prediction.getPrimaryText(STYLE_NORMAL).toString(), prediction.getFullText(STYLE_BOLD).toString()));
                 }
-
             return resultList;
         } else {
             return resultList;
         }
-
     }
 
     @NonNull
@@ -184,37 +168,25 @@ public class PlaceAutoCompleteAdapter extends RecyclerView.Adapter<PlaceAutoComp
         @Override
         public void onClick(View v) {
             PlaceAutocomplete item = mResultList.get(getAdapterPosition());
-            //if (v.getId() == R.id.place_item_view) {
-
-                String placeId = String.valueOf(item.placeId);
-
-                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
-                FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
-                placesClient.fetchPlace(request).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
-                    @Override
-                    public void onSuccess(FetchPlaceResponse response) {
-                        Place place = response.getPlace();
-                        clickListener.click(place);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        if (exception instanceof ApiException) {
-                            Toast.makeText(mContext, exception.getMessage() + "", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            //}
+            String placeId = String.valueOf(item.placeId);
+            List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
+            FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
+            placesClient.fetchPlace(request).addOnSuccessListener(response -> {
+                Place place = response.getPlace();
+                clickListener.click(place);
+            }).addOnFailureListener(exception -> {
+                if (exception instanceof ApiException) {
+                    Toast.makeText(mContext, exception.getMessage() + "", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
-
 
     /*
      * Holder for Places Geo Data Autocomplete API results.
      */
 
-    public class PlaceAutocomplete {
-
+    public static class PlaceAutocomplete {
         public CharSequence placeId;
         public CharSequence address, area;
 

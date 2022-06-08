@@ -7,17 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.smartorders.R;
+
+import java.util.List;
 
 public class PastOrderListOfItemsAdapter extends BaseAdapter {
     private final Context context;
-    List<PastOrderItemModel> itemsOrdered;
+    private final List<PastOrderItemModel> itemsOrdered;
 
     public PastOrderListOfItemsAdapter(Context context, List<PastOrderItemModel> itemsOrdered) {
         this.context = context;
@@ -28,7 +24,6 @@ public class PastOrderListOfItemsAdapter extends BaseAdapter {
         this.itemsOrdered = itemsOrdered;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         PastOrderItemModel orderItemName = itemsOrdered.get(position);
@@ -37,10 +32,8 @@ public class PastOrderListOfItemsAdapter extends BaseAdapter {
         rowView = inflater.inflate(R.layout.row_with_item_order, parent, false);
         TextView textViewName =  rowView.findViewById(R.id.itemOrderedName);
         TextView textViewQuantity =  rowView.findViewById(R.id.itemOrderedQuantity);
-
         textViewQuantity.setText(orderItemName.getPastOrderItemQuantity());
         textViewName.setText(orderItemName.getPastOrderItemName());
-
         return rowView;
     }
 
