@@ -25,6 +25,8 @@ import com.stripe.android.model.Token;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class StripeRepositoryImpl implements StripeRepository {
     private final static String TAG = "StripeRepositoryImpl ";
@@ -87,36 +89,39 @@ public class StripeRepositoryImpl implements StripeRepository {
 
     @Override
     public void getSourcesFromFirestore(Context context, ProgressDialog mProgressDialog, ListView listView) {
-        final LinkedHashMap<String, String>[] last4DigitsToBrandMap = new LinkedHashMap[]{new LinkedHashMap<>()};
+        AtomicReference<LinkedHashMap<String, String>> last4DigitsToBrandMap = new AtomicReference<>(new LinkedHashMap<>());
         FirebaseFirestore.getInstance().collection("stripe_customers").
                 document(mAuth.getUid()).collection("sources")
                 .get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            if (task.isSuccessful() && Objects.requireNonNull(task.getResult()).getDocuments().size() > 0) {
                 Toast.makeText(context, "Successfully retrieved sources", Toast.LENGTH_LONG).show();
-                for (QueryDocumentSnapshot document : task.getResult()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                     Log.d(TAG, document.getId() + " => " + document.getData());
-                    last4DigitsToBrandMap[0] = getLast4DigitsAndBrand(document.getData());
+                    last4DigitsToBrandMap.set(getLast4DigitsAndBrand(document.getData(), last4DigitsToBrandMap));
                 }
                 /*List view with items*/
-                final PaymentInfoAdapter adapter = new PaymentInfoAdapter(context, last4DigitsToBrandMap[0]);
+                final PaymentInfoAdapter adapter = new PaymentInfoAdapter(context, last4DigitsToBrandMap);
                 listView.setAdapter(adapter);
                 if (mProgressDialog != null && mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
                 }
             }
             else {
+                Toast.makeText(context, "Did not find any card", Toast.LENGTH_LONG).show();
                 Log.d(TAG, "Error getting documents: ", task.getException());
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
             }
-            for(Map.Entry<String,String> cardDetails : last4DigitsToBrandMap[0].entrySet()) {
+            for(Map.Entry<String,String> cardDetails : last4DigitsToBrandMap.get().entrySet()) {
                 Log.i(TAG,cardDetails.getKey()+" "+cardDetails.getValue());
             }
         });
     }
 
-    private LinkedHashMap<String, String> getLast4DigitsAndBrand(Map<String, Object> data) {
+    private LinkedHashMap<String, String> getLast4DigitsAndBrand(Map<String, Object> data, AtomicReference<LinkedHashMap<String, String>> last4DigitsToBrandMap) {
         String brand = "";
         String last4 = "";
-        LinkedHashMap<String, String> last4DigitsToBrandMap = new LinkedHashMap<>();
         for(Map.Entry<String,Object> cardDetails : data.entrySet()) {
             if(cardDetails.getKey().equals("brand")){
                 brand = (String) cardDetails.getValue();
@@ -125,8 +130,8 @@ public class StripeRepositoryImpl implements StripeRepository {
                 last4 = (String) cardDetails.getValue();
             }
         }
-        last4DigitsToBrandMap.put(last4,brand);
-        return last4DigitsToBrandMap;
+        last4DigitsToBrandMap.get().put(last4,brand);
+        return last4DigitsToBrandMap.get();
     }
 
 }

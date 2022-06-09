@@ -13,7 +13,7 @@ import com.stripe.android.model.Card;
 import com.stripe.android.view.CardInputWidget;
 
 public class AddCardActivity extends AppCompatActivity {
-    private StripeService stripeService = new StripeServiceImpl();
+    private final StripeService stripeService = new StripeServiceImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

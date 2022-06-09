@@ -18,6 +18,7 @@ import java.util.Objects;
 public class OrderStatusActivity extends AppCompatActivity {
 
     private String orderId;
+    private String error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class OrderStatusActivity extends AppCompatActivity {
         TextView orderStatus = findViewById(R.id.orderStatus);
         if(Objects.requireNonNull(intent.getStringExtra("Activity")).equals("CheckoutActivity")) {
             orderId = intent.getStringExtra("orderId");
+            error = intent.getStringExtra("error");
         }
         if(Objects.requireNonNull(intent.getStringExtra("Activity")).equals("AddPaypalActivity")) {
             try {
@@ -36,16 +38,19 @@ public class OrderStatusActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if(!orderId.equals("")) {
+        if(orderId != null) {
             orderStatus.setText("Thank you! Your order with number " + orderId + " was sent to Greek Artisan Pastries. Click the button to continue browsing.");
             /*Clear the basket so that it doesn't show the items anymore */
-            MyApplication app = (MyApplication) getApplicationContext();
-            app.clearBasket();
+        }
+        else if(error != null){
+            orderStatus.setText("There was an error on your transaction with message " + error);
         }
         /*there was an error placing the order */
         else {
             orderStatus.setText("There was an error placing your order. Please try again.");
         }
+        MyApplication app = (MyApplication) getApplicationContext();
+        app.clearBasket();
         Button homeBtn = findViewById(R.id.homeButton);
         homeBtn.setOnClickListener(view -> {
             Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);

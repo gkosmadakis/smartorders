@@ -8,15 +8,10 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.example.smartorders.activities.OrderStatusActivity;
 import com.example.smartorders.config.Config;
+import com.example.smartorders.interfaces.ProcessPaymentCallback;
 import com.example.smartorders.models.MyApplication;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,17 +19,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PaymentRepositoryImpl implements PaymentRepository{
     private static final String TAG = "PaymentRepositoryImpl ";
@@ -46,8 +42,9 @@ public class PaymentRepositoryImpl implements PaymentRepository{
             .clientId(Config.PAYPAL_CLIENT_ID);
 
     @Override
-    public void processPayment(String totalPriceReceived, Context context, String deliveryOrPickup) {
+    public boolean processPayment(String totalPriceReceived, Context context, String deliveryOrPickup, final ProcessPaymentCallback callback) {
         DocumentReference chargeRef;
+        AtomicBoolean successCharge = new AtomicBoolean(false);
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(context);
             mProgressDialog.setMessage("Please wait");
@@ -59,16 +56,21 @@ public class PaymentRepositoryImpl implements PaymentRepository{
         /*It expects cents so i multiply by 100 */
         chargeDetails.put("amount",Double.parseDouble(totalPriceReceived)*100);
         chargeDetails.put("currency","gbp");
+        chargeDetails.put("created", new Date().getTime() / 1000);
         chargeRef.set(chargeDetails);
         chargeRef.update("amount",Double.parseDouble(totalPriceReceived)*100).addOnSuccessListener(aVoid -> {
-            Toast.makeText(context, totalPriceReceived+" charged successfully", Toast.LENGTH_LONG).show();
             Log.i(TAG,"Firestore charges collection created, calling Firebase Function createStripeCharge");
             /*Here call the firestore and get the last charge created and see if the status was a success */
-            getLastChargeFromFirestore(context, totalPriceReceived, deliveryOrPickup);
+            //getLastChargeFromFirestore(context, totalPriceReceived, deliveryOrPickup);
+            successCharge.set(true);
+            callback.onSuccess(successCharge.get());
         }).addOnFailureListener(e -> {
             Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             Log.e(TAG,e.getLocalizedMessage());
+            successCharge.set(false);
+            callback.onSuccess(successCharge.get());
         });
+        return successCharge.get();
     }
 
     @Override
@@ -77,26 +79,35 @@ public class PaymentRepositoryImpl implements PaymentRepository{
          * Check Firestore to see if the order was success, get the Id document and check if it has status success */
         Log.d(TAG,"Getting into getLastChargeFromFirestore");
                 FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        Query query = rootRef.collection("stripe_customers").document(mAuth.getUid()).collection("charges")
+        Query query = rootRef.collection("stripe_customers").document(Objects.requireNonNull(mAuth.getUid())).collection("charges")
                 .orderBy("created", Query.Direction.DESCENDING)
                 .limit(1);
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d(TAG, document.getId() + " => " + document.getData().get("status"));
-                    if(document.getData().get("status").equals("succeeded")){
-                        /*That means the transaction was completed successfully inform the user */
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    Log.d(TAG, document.getId());
+                    Intent intent = new Intent(context, OrderStatusActivity.class);
+                    /*There was an error in the transaction show it to the user */
+                    if(document.getData().get("error") != null){
+                        String error = document.getData().get("error").toString();
+                        Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                        intent.putExtra("Activity", "CheckoutActivity");
+                        intent.putExtra("error", error);
+                        context.startActivity(intent);
+                    }
+                    /*That means the transaction was completed successfully inform the user */
+                    if(document.getData().get("status") != null){
                         Log.i(TAG, "Transaction status "+document.getData().get("status")+
                                 " Amount charged "+document.getData().get("amount"));
                         /* and add the order to Firebase Database */
                         int orderID = storeOrderToFirebaseDB(context, totalPriceReceived, deliveryOrPickup);
-                        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                            mProgressDialog.dismiss();
-                            Intent intent = new Intent(context, OrderStatusActivity.class);
-                            intent.putExtra("Activity", "CheckoutActivity");
-                            intent.putExtra("orderId",String.valueOf(orderID));
-                            context.startActivity(intent);
-                        }
+                        intent.putExtra("Activity", "CheckoutActivity");
+                        intent.putExtra("orderId",String.valueOf(orderID));
+                        context.startActivity(intent);
+                        Toast.makeText(context, totalPriceReceived+" charged successfully", Toast.LENGTH_LONG).show();
+                    }
+                    if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
                     }
                 }
             } else {

@@ -3,6 +3,7 @@ package com.example.smartorders.service;
 import android.app.Activity;
 import android.content.Context;
 
+import com.example.smartorders.interfaces.ProcessPaymentCallback;
 import com.example.smartorders.repository.PaymentRepository;
 import com.example.smartorders.repository.PaymentRepositoryImpl;
 
@@ -10,8 +11,8 @@ public class PaymentServiceImpl implements PaymentService{
     private final PaymentRepository paymentRepository = new PaymentRepositoryImpl();
 
     @Override
-    public void processPayment(String totalPriceReceived, Context context, String deliveryOrPickup) {
-        paymentRepository.processPayment(totalPriceReceived, context, deliveryOrPickup);
+    public boolean processPayment(String totalPriceReceived, Context context, String deliveryOrPickup, final ProcessPaymentCallback callback) {
+        return paymentRepository.processPayment(totalPriceReceived, context, deliveryOrPickup, callback);
     }
 
     @Override

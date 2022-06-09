@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         viewBasketBtn.setOnClickListener(view -> {
             /*Get total price of goods here */
             MyApplication app = (MyApplication) getApplicationContext();
-            if(app.hasBasketItems()) {
+            if(!app.isBasketEmpty()) {
                 String totalPrice = app.getPrice();
                 Intent intent = new Intent(view.getContext(), CheckoutActivity.class);
                 intent.putExtra("totalPrice",totalPrice);
@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showViewBasketBtn() {
         MyApplication app = (MyApplication) getApplicationContext();
-        if(app.hasBasketItems()) {
+        if(!app.isBasketEmpty()) {
             String quantityAdded = app.getQuantity();
             String price = app.getPrice();
             viewBasketBtn.setVisibility(View.VISIBLE);

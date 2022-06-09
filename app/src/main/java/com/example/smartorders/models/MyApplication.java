@@ -56,12 +56,14 @@ public class MyApplication extends MultiDexApplication {
         this.instructionToFoodNameMap = instructionToFoodNameMap;
     }
 
-    public boolean hasBasketItems() {
-        boolean hasItems = false;
-        if(quantity != "" && price != "" && !foodNames.isEmpty() && !quantityNamePriceMap.isEmpty()){
-            hasItems = true;
+    public boolean isBasketEmpty() {
+        boolean isEmpty = true;
+        if(quantity != null && price != null) {
+            if (Integer.parseInt(quantity) > 0 && Double.parseDouble(price) > 0.0) {
+                isEmpty = false;
+            }
         }
-        return hasItems;
+        return isEmpty;
     }
 
     @Override

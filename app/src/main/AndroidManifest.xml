@@ -131,7 +131,7 @@
             android:value="sandbox-sq0idb-1En09Kn5Folxz-ezlCWmeg" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="XXXXXXXXXXXXXXXXXXXXXXXXXX" />
+            android:value="AIzaSyDaLz2mZZweG6mHt4RUNulx-WMTrR7g-yA" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

@@ -27,12 +27,15 @@ import com.example.smartorders.utils.VerticalViewPager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.DecimalFormat;
+
 public class RestaurantActivity extends AppCompatActivity {
 
     private AppBarLayout appBarLayout;
     private Button viewBasketBtn;
     private String quantityAdded;
     private String price;
+    DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class RestaurantActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> {
             /* if the basket is empty navigate to Home Activity */
             MyApplication app = (MyApplication) getApplicationContext();
-            if(!app.hasBasketItems()){
+            if(app.isBasketEmpty()){
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
             }
@@ -82,7 +85,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 restaurantName.setVisibility(View.GONE);
                 menuText.setVisibility(View.GONE);
                 //Make the back button on the action bar black //
-                final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+                final Drawable upArrow = getDrawable(R.drawable.abc_ic_ab_back_material);
                 upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
                 //Make the font text of the action bar black //
@@ -105,7 +108,7 @@ public class RestaurantActivity extends AppCompatActivity {
         viewBasketBtn.setOnClickListener(view -> {
             /*Get total price of goods here */
             MyApplication app = (MyApplication) getApplicationContext();
-            if(app.hasBasketItems()) {
+            if(!app.isBasketEmpty()) {
                 Intent intent = new Intent(view.getContext(), CheckoutActivity.class);
                 startActivity(intent);
             }
@@ -140,11 +143,12 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private void showViewBasketBtn() {
         MyApplication app = (MyApplication) getApplicationContext();
-        if(app.hasBasketItems()) {
+        if(!app.isBasketEmpty()) {
             String quantityAdded = app.getQuantity();
             String price = app.getPrice();
+            double priceDouble = Double.parseDouble(price);
             viewBasketBtn.setVisibility(View.VISIBLE);
-            viewBasketBtn.setText("£" + price + "     View Basket     " + quantityAdded);
+            viewBasketBtn.setText("£" + df.format(priceDouble) + "     View Basket     " + quantityAdded);
         }
     }
 

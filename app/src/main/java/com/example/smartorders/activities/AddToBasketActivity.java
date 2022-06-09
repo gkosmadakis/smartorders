@@ -33,6 +33,7 @@ public class AddToBasketActivity extends AppCompatActivity {
     private String foodNameToChange;
     private String priceToChange;
     private EditText instructionsEditText;
+    private DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +77,19 @@ public class AddToBasketActivity extends AppCompatActivity {
             addToBasketBtn.setText("Update Basket "+"£"
                     +df.format(Double.parseDouble(priceToChange) *Integer.parseInt(quantityToChange)));
         }
-        plusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                minusBtn.setEnabled(true);
-                if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
-                    quantityAdded++;
-                    quantityText.setText(String.valueOf(quantityAdded));
-                    addToBasketBtn.setText("Add " + quantityAdded + " to basket "
-                            + "£" + df.format(priceDouble * quantityAdded));
-                }
-                if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
-                    quantityToUpdate++;
-                    quantityText.setText(String.valueOf(quantityToUpdate));
-                    addToBasketBtn.setText("Update Basket "+"£"
-                            +df.format(Double.parseDouble(priceToChange) *quantityToUpdate));
-                }
+        plusBtn.setOnClickListener(view -> {
+            minusBtn.setEnabled(true);
+            if(intent.getStringExtra("Class").equals("FoodListAdapter")) {
+                quantityAdded++;
+                quantityText.setText(String.valueOf(quantityAdded));
+                addToBasketBtn.setText("Add " + quantityAdded + " to basket "
+                        + "£" + df.format(priceDouble * quantityAdded));
+            }
+            if(intent.getStringExtra("Class").equals("CheckoutOrderItemsAdapter")){
+                quantityToUpdate++;
+                quantityText.setText(String.valueOf(quantityToUpdate));
+                addToBasketBtn.setText("Update Basket "+"£"
+                        +df.format(Double.parseDouble(priceToChange) *quantityToUpdate));
             }
         });
         minusBtn.setOnClickListener(view -> {
@@ -174,11 +172,11 @@ public class AddToBasketActivity extends AppCompatActivity {
         /*Update Price */
         String existingTotalPrice = app.getPrice();
         Double updatedPrice = Double.parseDouble(existingTotalPrice) - Integer.parseInt(quantityToRemove) * Double.parseDouble(priceToRemove);
-        app.setPrice(String.valueOf(updatedPrice));
+        app.setPrice(String.valueOf(df.format(updatedPrice)));
         /*Update quantityNamePriceMap */
         app.getQuantityNamePriceMap().get(quantityToRemove).remove(foodNameToRemove);
         /* if the basket is empty navigate to Restaurant Activity and clear all the other activities */
-        if(!app.hasBasketItems()){
+        if(app.isBasketEmpty()){
             Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
             startActivity(intent);
         }
@@ -196,7 +194,7 @@ public class AddToBasketActivity extends AppCompatActivity {
         Map<String, Map<String,Double>> quantityNamePriceMap = app.getQuantityNamePriceMap();
         Map<String, String> instructionToFoodNameMap = app.getInstructionToFoodNameMap();
         double totalPrice = 0.0;
-        if (app.hasBasketItems()){
+        if (!app.isBasketEmpty()){
             String price = app.getPrice();
             String quantity = app.getQuantity();
             totalPrice = (priceDouble*quantityAdded) + Double.parseDouble(price);

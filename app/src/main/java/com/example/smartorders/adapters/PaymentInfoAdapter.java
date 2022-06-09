@@ -11,26 +11,27 @@ import android.widget.TextView;
 import com.example.smartorders.R;
 
 import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PaymentInfoAdapter extends BaseAdapter {
     private final Context context;
-    private final LinkedHashMap<String, String> cardData;
+    private final AtomicReference<LinkedHashMap<String, String>> cardData;
     private final String[] mKeys;
 
-    public PaymentInfoAdapter(Context context, LinkedHashMap<String, String> data) {
+    public PaymentInfoAdapter(Context context, AtomicReference<LinkedHashMap<String, String>> data) {
         this.context = context;
-        cardData  = data;
-        mKeys = cardData.keySet().toArray(new String[data.size()]);
+        cardData = data;
+        mKeys = cardData.get().keySet().toArray(new String[data.get().size()]);
     }
 
     @Override
     public int getCount() {
-        return cardData.size();
+        return cardData.get().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return cardData.get(mKeys[position]);
+        return cardData.get().get(mKeys[position]);
     }
 
     @Override

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartorders.R;
 import com.example.smartorders.adapters.CheckoutOrderItemsAdapter;
+import com.example.smartorders.interfaces.ProcessPaymentCallback;
 import com.example.smartorders.models.MyApplication;
 import com.example.smartorders.service.PaymentService;
 import com.example.smartorders.service.PaymentServiceImpl;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Timer;
 
 public class CheckoutActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -54,25 +56,21 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
     private RecyclerView orderListSelected;
     private Button addPaymentMethodBtn;
     private Button placeOrderBtn;
-    private FirebaseAuth mAuth;
     private final int addCardSuccessfullyFromCheckout = 1;
-    private Map<String,String> tokenTo4LastDigitsMap = new HashMap();
     private EditText paymentSelected;
     private TextView subTotalPriceText;
     private TextView totalPriceText;
-    private TextView deliveryFeesValue;
     private Double totalPrice;
     /*TODO hardcoded will have to be changed */
     private static final String deliveryFee = "1.5";
-    private  DecimalFormat df = new DecimalFormat("#.##");
+    private DecimalFormat df = new DecimalFormat("#.##");
     private boolean userHasAddedCard;
-    private PaymentService paymentService = new PaymentServiceImpl();
+    private final PaymentService paymentService = new PaymentServiceImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
-        mAuth = FirebaseAuth.getInstance();
         MyApplication app = (MyApplication) getApplicationContext();
         String totalPriceReceived = app.getPrice();
         /* TODO Don't hardcode home as the user might want to select work */
@@ -98,7 +96,7 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         TextView addItems = findViewById(R.id.addItems);
         orderListSelected = findViewById(R.id.orderRecyclerView);
         subTotalPriceText = findViewById(R.id.subTotalPriceValue);
-        deliveryFeesValue = findViewById(R.id.deliveryFeesValue);
+        TextView deliveryFeesValue = findViewById(R.id.deliveryFeesValue);
         totalPriceText = findViewById(R.id.totalPriceValue);
         if(totalPriceReceived != null) {
             subTotalPriceText.setText("£" + df.format(Double.parseDouble(totalPriceReceived)));
@@ -125,23 +123,17 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         displayMapImage(latitude, longtitude, mapImage);
         setDeliveryOptionsButtons(deliveryOption);
         showOrderItemsList();
-        addItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*Go to Restaurant Activity */
-                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                startActivity(intent);
-            }
+        addItems.setOnClickListener(view -> {
+            /*Go to Restaurant Activity */
+            Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+            startActivity(intent);
         });
-        addPaymentMethodBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*Go to add Payment Method Activity */
-                Intent intent = new Intent(getApplicationContext(), AddPaymentMethodActivity.class);
-                intent.putExtra("totalPrice", String.valueOf(totalPrice));
-                intent.putExtra("deliveryOrPickup",deliveryOrPickup.getSelectedItem().toString());
-                startActivityForResult(intent, addCardSuccessfullyFromCheckout);
-            }
+        addPaymentMethodBtn.setOnClickListener(view -> {
+            /*Go to add Payment Method Activity */
+            Intent intent = new Intent(getApplicationContext(), AddPaymentMethodActivity.class);
+            intent.putExtra("totalPrice", String.valueOf(totalPrice));
+            intent.putExtra("deliveryOrPickup",deliveryOrPickup.getSelectedItem().toString());
+            startActivityForResult(intent, addCardSuccessfullyFromCheckout);
         });
         /*Look at sharedPrefs to see if the user has added a payment method */
         SharedPreferences prefers = getSharedPreferences("payments",Context.MODE_PRIVATE);
@@ -153,7 +145,19 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         }
         placeOrderBtn.setOnClickListener(view -> {
             /*Process the payment */
-            paymentService.processPayment(totalPriceReceived, CheckoutActivity.this, deliveryOrPickup.getSelectedItem().toString());
+            paymentService.processPayment(totalPriceReceived, CheckoutActivity.this, deliveryOrPickup.getSelectedItem().toString(),new ProcessPaymentCallback(){
+                @Override
+                public void onSuccess(boolean value) {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(value){
+                        paymentService.getLastChargeFromFirestore(CheckoutActivity.this, totalPriceReceived, deliveryOrPickup.getSelectedItem().toString());
+                    }
+                }
+            });
         });
     }// end of onCreate
 
