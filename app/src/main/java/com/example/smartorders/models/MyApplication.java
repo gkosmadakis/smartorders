@@ -76,8 +76,8 @@ public class MyApplication extends MultiDexApplication {
     }
 
     public void clearBasket(){
-        quantity = "";
-        price = "";
+        quantity = null;
+        price = null;
         foodNames.clear();
         quantityNamePriceMap.clear();
         instructionToFoodNameMap.clear();

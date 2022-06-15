@@ -25,6 +25,8 @@ import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +87,7 @@ public class PaymentRepositoryImpl implements PaymentRepository{
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    Log.d(TAG, document.getId());
+                    Log.d(TAG, "Document ID "+document.getId());
                     Intent intent = new Intent(context, OrderStatusActivity.class);
                     /*There was an error in the transaction show it to the user */
                     if(document.getData().get("error") != null){
@@ -96,7 +98,7 @@ public class PaymentRepositoryImpl implements PaymentRepository{
                         context.startActivity(intent);
                     }
                     /*That means the transaction was completed successfully inform the user */
-                    if(document.getData().get("status") != null){
+                    else if(document.getData().get("status") != null){
                         Log.i(TAG, "Transaction status "+document.getData().get("status")+
                                 " Amount charged "+document.getData().get("amount"));
                         /* and add the order to Firebase Database */
@@ -105,6 +107,9 @@ public class PaymentRepositoryImpl implements PaymentRepository{
                         intent.putExtra("orderId",String.valueOf(orderID));
                         context.startActivity(intent);
                         Toast.makeText(context, totalPriceReceived+" charged successfully", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Log.d(TAG, "An unexpected error occurred "+ document.getData());
                     }
                     if (mProgressDialog != null && mProgressDialog.isShowing()) {
                         mProgressDialog.dismiss();

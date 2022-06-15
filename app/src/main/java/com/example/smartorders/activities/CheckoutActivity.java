@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,8 +39,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +51,7 @@ import java.util.Timer;
 
 public class CheckoutActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private static final String TAG = "CheckoutActivity ";
+    private static final String TAG = "CheckOutActivity ";
     private Button meetOutside;
     private Button meetAtDoor;
     private Button leaveAtDoor;
@@ -55,6 +59,7 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
     private String [] deliveryOrPickupArray;
     private RecyclerView orderListSelected;
     private Button addPaymentMethodBtn;
+    private Button changePaymentMethodBtn;
     private Button placeOrderBtn;
     private final int addCardSuccessfullyFromCheckout = 1;
     private EditText paymentSelected;
@@ -105,6 +110,8 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         }
         deliveryFeesValue.setText("£"+deliveryFee);
         addPaymentMethodBtn = findViewById(R.id.addPaymentMethodBtn);
+        changePaymentMethodBtn = findViewById(R.id.changePaymentMethodBtn);
+        changePaymentMethodBtn.setVisibility(View.GONE);
         paymentSelected = findViewById(R.id.paymentSelected);
         paymentSelected.setVisibility(View.GONE);
         placeOrderBtn = findViewById(R.id.placeOrderBtn);
@@ -130,16 +137,17 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         });
         addPaymentMethodBtn.setOnClickListener(view -> {
             /*Go to add Payment Method Activity */
-            Intent intent = new Intent(getApplicationContext(), AddPaymentMethodActivity.class);
-            intent.putExtra("totalPrice", String.valueOf(totalPrice));
-            intent.putExtra("deliveryOrPickup",deliveryOrPickup.getSelectedItem().toString());
-            startActivityForResult(intent, addCardSuccessfullyFromCheckout);
+            startPaymentMethodActivity();
+        });
+        changePaymentMethodBtn.setOnClickListener(view -> {
+            startPaymentMethodActivity();
         });
         /*Look at sharedPrefs to see if the user has added a payment method */
         SharedPreferences prefers = getSharedPreferences("payments",Context.MODE_PRIVATE);
         if(!prefers.getString("lastPaymentMethod","").equals("")){
             paymentSelected.setVisibility(View.VISIBLE);
             addPaymentMethodBtn.setVisibility(View.GONE);
+            changePaymentMethodBtn.setVisibility(View.VISIBLE);
             placeOrderBtn.setEnabled(true);
             paymentSelected.setText("**********"+prefers.getString("lastPaymentMethod",""));
         }
@@ -149,17 +157,27 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
                 @Override
                 public void onSuccess(boolean value) {
                     try {
-                        Thread.sleep(3000);
+                        /* Sleep here to allow the function createStripeCharge to finish
+                        * and have the data created in charges in Firestore DB*/
+                        Thread.sleep(5000);
+                        if(value){
+                            paymentService.getLastChargeFromFirestore(CheckoutActivity.this, totalPriceReceived, deliveryOrPickup.getSelectedItem().toString());
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
-                    if(value){
-                        paymentService.getLastChargeFromFirestore(CheckoutActivity.this, totalPriceReceived, deliveryOrPickup.getSelectedItem().toString());
                     }
                 }
             });
         });
     }// end of onCreate
+
+    private void startPaymentMethodActivity() {
+        /*Go to add Payment Method Activity */
+        Intent intent = new Intent(getApplicationContext(), AddPaymentMethodActivity.class);
+        intent.putExtra("totalPrice", String.valueOf(totalPrice));
+        intent.putExtra("deliveryOrPickup", deliveryOrPickup.getSelectedItem().toString());
+        startActivityForResult(intent, addCardSuccessfullyFromCheckout);
+    }
 
     @Override
     public void onResume(){
@@ -174,6 +192,7 @@ public class CheckoutActivity extends AppCompatActivity implements AdapterView.O
         if(isUserHasAddedCard()){
             paymentSelected.setVisibility(View.VISIBLE);
             addPaymentMethodBtn.setVisibility(View.GONE);
+            changePaymentMethodBtn.setVisibility(View.VISIBLE);
             placeOrderBtn.setEnabled(true);
         }
     }

@@ -252,6 +252,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/orderListView" />
 
             <Button
+                android:id="@+id/changePaymentMethodBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Change payment method"
+                app:layout_constraintStart_toEndOf="@+id/addPaymentMethodBtn"
+                app:layout_constraintStart_toStartOf="@+id/addPaymentMethodBtn"
+                app:layout_constraintTop_toBottomOf="@+id/addPaymentMethodBtn" />
+
+            <Button
                 android:id="@+id/placeOrderBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
