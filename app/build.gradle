@@ -78,9 +78,9 @@ dependencies {
     implementation 'com.stripe:stripe-android:14.4.1'
     implementation 'com.stripe:stripe-java:19.11.0'
 
-    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+    implementation 'com.paypal.checkout:android-sdk:0.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'com.synnapps:carouselview:0.1.4'
-
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }

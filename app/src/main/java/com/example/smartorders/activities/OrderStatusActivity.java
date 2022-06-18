@@ -31,12 +31,7 @@ public class OrderStatusActivity extends AppCompatActivity {
             error = intent.getStringExtra("error");
         }
         if(Objects.requireNonNull(intent.getStringExtra("Activity")).equals("AddPaypalActivity")) {
-            try {
-                JSONObject jsonObject = new JSONObject(Objects.requireNonNull(intent.getStringExtra("PaymentDetails")));
-                orderId = jsonObject.getString("id");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            orderId = Objects.requireNonNull(intent.getStringExtra("orderId"));
         }
         if(orderId != null) {
             orderStatus.setText("Thank you! Your order with number " + orderId + " was sent to Greek Artisan Pastries. Click the button to continue browsing.");

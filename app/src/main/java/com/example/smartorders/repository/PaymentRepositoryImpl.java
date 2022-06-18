@@ -9,7 +9,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.smartorders.activities.OrderStatusActivity;
-import com.example.smartorders.config.Config;
 import com.example.smartorders.interfaces.ProcessPaymentCallback;
 import com.example.smartorders.models.MyApplication;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,14 +18,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.paypal.android.sdk.payments.PayPalConfiguration;
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,9 +31,6 @@ public class PaymentRepositoryImpl implements PaymentRepository{
     private  ProgressDialog mProgressDialog;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-    private static PayPalConfiguration config = new PayPalConfiguration()
-            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
-            .clientId(Config.PAYPAL_CLIENT_ID);
 
     @Override
     public boolean processPayment(String totalPriceReceived, Context context, String deliveryOrPickup, final ProcessPaymentCallback callback) {
@@ -152,13 +141,4 @@ public class PaymentRepositoryImpl implements PaymentRepository{
         return random;
     }
 
-    @Override
-    public void processPaypalPayment(String amount, Activity addPaypalActivity, int PAYPAL_REQUEST_CODE) {
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(amount),"GBP",
-                "Purchase Goods",PayPalPayment.PAYMENT_INTENT_SALE);
-        Intent intent = new Intent(addPaypalActivity.getApplicationContext(), PaymentActivity.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-        addPaypalActivity.startActivityForResult(intent,PAYPAL_REQUEST_CODE);
-    }
 }

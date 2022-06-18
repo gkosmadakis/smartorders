@@ -23,7 +23,15 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-
+        maven {
+            url  "https://cardinalcommerceprod.jfrog.io/artifactory/android"
+            credentials {
+                // Be sure to add these non-sensitive credentials in order to retrieve dependencies from
+                // the private repository.
+                username mavenUser
+                password mavenPassword
+            }
+        }
     }
 }
 

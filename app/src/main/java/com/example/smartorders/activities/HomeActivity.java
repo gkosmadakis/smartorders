@@ -6,9 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.smartorders.config.Config;
 import com.example.smartorders.models.MyApplication;
 import com.example.smartorders.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.paypal.checkout.PayPalCheckout;
+import com.paypal.checkout.config.CheckoutConfig;
+import com.paypal.checkout.config.Environment;
+import com.paypal.checkout.config.SettingsConfig;
+import com.paypal.checkout.createorder.CurrencyCode;
+import com.paypal.checkout.createorder.UserAction;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -47,6 +54,19 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        CheckoutConfig config = new CheckoutConfig(
+                getApplication(),
+                Config.PAYPAL_CLIENT_ID,
+                Environment.SANDBOX,
+                "com.example.smartorders://paypalpay",
+                CurrencyCode.GBP,
+                UserAction.PAY_NOW,
+                new SettingsConfig(
+                        true,
+                        false
+                )
+        );
+        PayPalCheckout.setConfig(config);
     }// end of onCreate
 
     public void setActionBarTitle(String title) {

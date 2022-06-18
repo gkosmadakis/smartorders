@@ -25,8 +25,4 @@ public class PaymentServiceImpl implements PaymentService{
         return paymentRepository.storeOrderToFirebaseDB(context, totalPriceReceived, deliveryOrPickup);
     }
 
-    @Override
-    public void processPaypalPayment(String amount, Activity addPaypalActivity, int PAYPAL_REQUEST_CODE) {
-         paymentRepository.processPaypalPayment(amount, addPaypalActivity, PAYPAL_REQUEST_CODE);
-    }
 }

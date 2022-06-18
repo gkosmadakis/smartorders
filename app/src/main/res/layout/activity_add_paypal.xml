@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:focusable="false"/>
 
-        <Button
+        <com.paypal.checkout.paymentbutton.PayPalButton
             android:id="@+id/btnPayNow"
             android:text="Pay Now"
             android:layout_width="match_parent"
