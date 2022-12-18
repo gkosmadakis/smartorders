@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.smartorders.R;
 import com.example.smartorders.fragments.PastOrdersFragment;
+import com.example.smartorders.interfaces.OnGetDataListenerOrderStatus;
 import com.example.smartorders.interfaces.OnGetDataListenerPastOrders;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -59,6 +60,44 @@ public class OrdersRepositoryImpl implements OrdersRepository{
                     pastOrderItemsComponents.add(itemObject);
                 }
                 listener.onSuccess(dataSnapshot,pastOrderItemsComponents);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveOrderPreparationTimeFromFirebase(OnGetDataListenerOrderStatus listener, String orderId) {
+        listener.onStart();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference currentOrder = mDatabase.child("Users").child(Objects.requireNonNull(mAuth.getUid())).child("Orders").child("order "+orderId);
+        currentOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot orderElements : dataSnapshot.getChildren()) {
+                    if (orderElements.getKey().equals("status")){
+                        for (DataSnapshot statusElements : orderElements.getChildren()) {
+                            if(statusElements.getKey().equals("status")){
+                                String orderStatus = statusElements.getValue(String.class);
+                                if(orderStatus.equals("accepted")){
+                                    System.out.println("Order status is accepted");
+                                     continue;
+                                }
+                                else{
+                                    //inform that the order was rejected
+                                    listener.onDeclineOrder(orderStatus);
+                                }
+                            }
+                            if(statusElements.getKey().equals("preparation-time")) {
+                                int orderTime = statusElements.getValue(Integer.class);
+                                System.out.println("Order Time retrieved " + orderTime);
+                                listener.onAcceptOrder(orderTime);
+                            }
+                        }
+                    }
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

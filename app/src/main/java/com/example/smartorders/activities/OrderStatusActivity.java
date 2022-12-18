@@ -34,7 +34,7 @@ public class OrderStatusActivity extends AppCompatActivity {
             orderId = Objects.requireNonNull(intent.getStringExtra("orderId"));
         }
         if(orderId != null) {
-            orderStatus.setText("Thank you! Your order with number " + orderId + " was sent to Greek Artisan Pastries. Click the button to continue browsing.");
+            orderStatus.setText("Thank you! Your order with number " + orderId + " was sent to Greek Artisan Pastries. Click the button to check the progress.");
             /*Clear the basket so that it doesn't show the items anymore */
         }
         else if(error != null){
@@ -47,9 +47,13 @@ public class OrderStatusActivity extends AppCompatActivity {
         MyApplication app = (MyApplication) getApplicationContext();
         app.clearBasket();
         Button homeBtn = findViewById(R.id.homeButton);
-        homeBtn.setOnClickListener(view -> {
-            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(homeIntent);
+        Button progressButton = findViewById(R.id.progressButton);
+
+
+        progressButton.setOnClickListener(view -> {
+            Intent orderProgressIntent = new Intent(getApplicationContext(), OrderProgressActivity.class);
+            orderProgressIntent.putExtra("orderId", orderId);
+            startActivity(orderProgressIntent);
         });
     }
 

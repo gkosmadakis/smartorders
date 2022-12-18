@@ -125,6 +125,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.OrderProgressActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.HomeActivity" />
+        </activity>
 
         <meta-data
             android:name="sqip.SQUARE_APPLICATION_ID"

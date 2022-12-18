@@ -10,6 +10,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_order_status">OrderStatusActivity</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_orders">Orders</string>
@@ -48,7 +49,7 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="api_key">XXXX</string>
+    <string name="api_key">XXXXX</string>
     <string name="access_token">XXXX</string>
     <string name="maps_static_api_key">XXXX</string>
     <string name="mastercattab1"> Past Orders</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,13 +19,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/homeButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/progressButton"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="#3F51B5"
-        android:text="Continue Browsing"
+        android:background="#00BCD4"
+        android:text="Check progress"
         android:textColorLink="#090909"
         app:layout_constraintEnd_toStartOf="@+id/orderStatus"
         app:layout_constraintStart_toEndOf="@+id/orderStatus"

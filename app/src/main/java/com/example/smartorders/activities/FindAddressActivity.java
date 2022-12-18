@@ -60,7 +60,7 @@ public class FindAddressActivity extends AppCompatActivity  {
     private String city;
     private double latitude;
     private double longtitude;
-    private DeliveryService deliveryService = new DeliveryServiceImpl();
+    private final DeliveryService deliveryService = new DeliveryServiceImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
