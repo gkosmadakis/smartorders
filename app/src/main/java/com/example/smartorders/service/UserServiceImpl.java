@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserEmailInFirebase(Context context, String newEmail) {
-        userRepository.updateUserEmailInFirebase(context, newEmail);
+    public void updateUserEmailInFirebase(Context context, String newEmail, String password) {
+        userRepository.updateUserEmailInFirebase(context, newEmail, password);
     }
 
     @Override
-    public void updateUserPhoneInFirebase(Context context, Intent data, EditText phoneNumberField) {
-        userRepository.updateUserPhoneInFirebase(context, data, phoneNumberField);
+    public void updateUserPhoneInFirebase(Context context, Intent data) {
+        userRepository.updateUserPhoneInFirebase(context, data);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential) {
-        userRepository.updateUserPhoneWithCredential(context, credential);
+    public void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential, String password) {
+        userRepository.updateUserPhoneWithCredential(context, credential, password);
     }
 
     @Override

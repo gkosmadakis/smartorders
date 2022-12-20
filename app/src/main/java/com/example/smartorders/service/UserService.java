@@ -19,10 +19,10 @@ public interface UserService {
     void signInWithPhoneAuthCredential(PhoneAuthCredential credential, Context context);
     void addUserToRealtimeDatabase(SingleInstanceUser authCredentialSingleInstance);
     void storeUserDetailsToSharedPrefs(String password, Context context, String uId);
-    void updateUserEmailInFirebase(Context context, final String newEmail);
-    void updateUserPhoneInFirebase(Context context, Intent data, EditText phoneNumberField);
+    void updateUserEmailInFirebase(Context context, final String newEmail, String password);
+    void updateUserPhoneInFirebase(Context context, Intent data);
     void updateUserFirstOrLastName(Context context, String childKeyInDB, String childValueInDB, String sharedPrefsKey, String updateTag);
     void updateUserPassword(Context context, String passwordExisting, String passwordNew);
-    void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential);
+    void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential, String password);
     void deleteUserFromFirebase(Context context);
 }

@@ -11,9 +11,11 @@ import androidx.preference.PreferenceManager;
 
 import com.example.smartorders.activities.HomeActivity;
 import com.example.smartorders.activities.UpdateAccountActivity;
+import com.example.smartorders.activities.UpdateEmailActivity;
 import com.example.smartorders.activities.UpdatePasswordActivity;
 import com.example.smartorders.activities.UpdatePhoneActivity;
 import com.example.smartorders.activities.VerificationActivity;
+import com.example.smartorders.activities.VerifyPasswordToUpdatePhoneActivity;
 import com.example.smartorders.models.SingleInstanceUser;
 import com.example.smartorders.utils.SharedPreferencesUtil;
 import com.google.firebase.auth.AuthCredential;
@@ -91,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
                         // TODO SAVING PASSWORD AS PLAIN TEXT IN SHARED PREFERENCES IS NOT GOOD PRACTICE BECAUSE A USER IN
                         // A ROOTED DEVICE WILL HAVE ACCESS TO IT. NEED TO RETHINK WHY I SAVE IT AND WHERE I USE IT AND
                         // FIND ANOTHER WAY TO GET THE PASSWORD IF NEEDED ANYWHERE IN THE APP
-                        sharedPreferencesUtil.getEditor().putString("password", password);
+                        //sharedPreferencesUtil.getEditor().putString("password", password);
                         sharedPreferencesUtil.getEditor().apply();
                     }
                 }
@@ -139,52 +141,59 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserEmailInFirebase(Context context, String newEmail) {
+    public void updateUserEmailInFirebase(Context context, String newEmail, String password) {
         FirebaseUser user = mAuth.getCurrentUser();
         // Get auth credentials from the user for re-authentication
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPrefs = context.getSharedPreferences("user_details", Context.MODE_PRIVATE);
         AuthCredential credential = EmailAuthProvider
-                .getCredential(sp.getString("email",""), sp.getString("password","")); // Current Login Credentials \\
+                .getCredential(sharedPrefs.getString("email",""), password); // Current Login Credentials \\
         // Prompt the user to re-provide their sign-in credentials
         assert user != null;
         user.reauthenticate(credential)
                 .addOnCompleteListener(task -> {
-                    Log.d(TAG, "User re-authenticated.");
-                    //Now change your email address \\
-                    //----------------Code for Changing Email Address----------\\
-                    FirebaseUser user1 = mAuth.getCurrentUser();
-                    assert user1 != null;
-                    user1.updateEmail(newEmail)
-                            .addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    Log.d(TAG, "User email address updated.");
-                                    Toast.makeText(context, "Email updated successfully", Toast.LENGTH_SHORT).show();
-                                    /*Update real time database*/
-                                    String user_id = mAuth.getCurrentUser().getUid();
-                                    DatabaseReference current_user_db = mDatabase.child(user_id);
-                                    current_user_db.child("email").setValue(newEmail);
-                                    current_user_db.child(sp.getString("phoneNumber","")).setValue(newEmail);
-                                    /*Update Preferences */
-                                    SharedPreferences.Editor editor = sp.edit();
-                                    editor.putString("email",newEmail);
-                                    editor.apply();
-                                    Intent data = new Intent();
-                                    data.putExtra("emailUpdated", newEmail);
-                                    // Activity finished ok, return the data
-                                    ((UpdateAccountActivity)context).setResult(RESULT_OK, data);
-                                    ((UpdateAccountActivity)context).finish();
-                                }
-                            });
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "User re-authenticated.");
+                        //Now change your email address \\
+                        //----------------Code for Changing Email Address----------\\
+                        FirebaseUser user1 = mAuth.getCurrentUser();
+                        assert user1 != null;
+                        user1.updateEmail(newEmail)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Log.d(TAG, "User email address updated.");
+                                        Toast.makeText(context, "Email updated successfully", Toast.LENGTH_SHORT).show();
+                                        /*Update real time database*/
+                                        String user_id = mAuth.getCurrentUser().getUid();
+                                        DatabaseReference current_user_db = mDatabase.child(user_id);
+                                        current_user_db.child("email").setValue(newEmail);
+                                        current_user_db.child(sharedPrefs.getString("phoneNumber", "")).setValue(newEmail);
+                                        /*Update Preferences */
+                                        SharedPreferences.Editor editor = sharedPrefs.edit();
+                                        editor.putString("email", newEmail);
+                                        editor.apply();
+                                        Intent data = new Intent();
+                                        data.putExtra("emailUpdated", newEmail);
+                                        // Activity finished ok, return the data
+                                        ((UpdateEmailActivity) context).setResult(RESULT_OK, data);
+                                        ((UpdateEmailActivity) context).finish();
+                                    }
+                                });
+                    }
+                    else {
+                        Toast.makeText(context, "Authentication failed, wrong existing password", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "Error auth failed with Email " +sharedPrefs.getString("email","") + " and password "+password);
+                    }
                 });
+
     }
 
     @Override
-    public void updateUserPhoneInFirebase(Context context, Intent data, EditText phoneNumberField) {
+    public void updateUserPhoneInFirebase(Context context, Intent data) {
         Log.d(TAG, Objects.requireNonNull(data.getExtras().getString("verifiedPhone")));
         /*Create a new ID in the Database and add the new phone and the current data email,first/last name*/
         String user_id = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         DatabaseReference current_user_db = mDatabase.child(user_id);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences("user_details", Context.MODE_PRIVATE);
         current_user_db.child("email").setValue(sp.getString("email", ""));
         current_user_db.child("first name").setValue(sp.getString("firstName", ""));
         current_user_db.child("last name").setValue(sp.getString("lastName", ""));
@@ -192,23 +201,23 @@ public class UserRepositoryImpl implements UserRepository {
         current_user_db.child("phone").setValue(data.getExtras().getString("verifiedPhone"));
         /*Update in Prefs. Store in preferences the new phone*/
         SharedPreferences.Editor editor = sp.edit();
+        System.out.println("UserRepositoryImpl "+data.getExtras().getString("verifiedPhone"));
         editor.putString("phoneNumber", data.getExtras().getString("verifiedPhone"));
         editor.apply();
         Intent dataIntent = new Intent();
-        dataIntent.putExtra("phoneUpdated", phoneNumberField.getText().toString());
+        dataIntent.putExtra("phoneUpdated", data.getExtras().getString("verifiedPhone"));
         // Activity finished ok, return the data
-        ((UpdateAccountActivity)context).setResult(RESULT_OK, data);
-        ((UpdateAccountActivity)context).finish();
+        ((VerifyPasswordToUpdatePhoneActivity)context).setResult(RESULT_OK, data);
+        ((VerifyPasswordToUpdatePhoneActivity)context).finish();
     }
 
     @Override
     public void updateUserFirstOrLastName(Context context, String childKeyInDB, String childValueInDB, String sharedPrefsKey, String updateTag) {
         DatabaseReference urlReferenceToId = FirebaseDatabase.getInstance().getReference().child("Users").child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         urlReferenceToId.child(childKeyInDB).setValue(childValueInDB);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(sharedPrefsKey, childValueInDB);
-        editor.apply();
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(context, "user_details");
+        sharedPreferencesUtil.getEditor().putString(sharedPrefsKey, childValueInDB);
+        sharedPreferencesUtil.getEditor().apply();
         Intent data = new Intent();
         data.putExtra(updateTag, childValueInDB);
         // Activity finished ok, return the data
@@ -219,8 +228,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void updateUserPassword(Context context, String passwordExisting, String passwordNew) {
         final FirebaseUser user = mAuth.getCurrentUser();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String email = sp.getString("email","");
+        SharedPreferences prefers = context.getSharedPreferences("user_details", Context.MODE_PRIVATE);
+        String email = prefers.getString("email","");
         // Get auth credentials from the user for re-authentication. The example below shows
         // email and password credentials but there are multiple possible providers,
         // such as GoogleAuthProvider or FacebookAuthProvider.
@@ -239,18 +248,21 @@ public class UserRepositoryImpl implements UserRepository {
                                 // Activity finished ok, return the data
                                 ((UpdatePasswordActivity)context).setResult(RESULT_OK, data);
                                 ((UpdatePasswordActivity)context).finish();
+                                Toast.makeText(context, "Password changed successfully", Toast.LENGTH_LONG).show();
                             } else {
+                                Toast.makeText(context, "Error occurred while changing password", Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "Error password not updated");
                             }
                         });
                     } else {
-                        Log.d(TAG, "Error auth failed");
+                        Toast.makeText(context, "Authentication failed, wrong existing password", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "Error auth failed with Email " +email + " and password "+passwordExisting);
                     }
                 });
     }
 
     @Override
-    public void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential) {
+    public void updateUserPhoneWithCredential(Context context, PhoneAuthCredential credential, String password) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -260,7 +272,7 @@ public class UserRepositoryImpl implements UserRepository {
                         if(user!=null) {
                             user.updatePhoneNumber(credential).addOnCompleteListener(task1 -> {
                                 Toast.makeText(context, "UpdatePhoneNumber success", Toast.LENGTH_SHORT).show();
-                                linkNewPhone(context);
+                                linkNewPhone(context, password);
                                 Log.d(TAG, "updated phone: "+user.getPhoneNumber());
                                 Intent data = new Intent();
                                 data.putExtra("verifiedPhone", user.getPhoneNumber());
@@ -278,7 +290,7 @@ public class UserRepositoryImpl implements UserRepository {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
-                            Toast.makeText(context, "FirebaseAuthInvalidCredentialsException", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Firebase Auth Invalid Credentials Exception", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -300,10 +312,9 @@ public class UserRepositoryImpl implements UserRepository {
                 });
     }
 
-    private void linkNewPhone(Context context){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    private void linkNewPhone(Context context, String password){
+        SharedPreferences sp = context.getSharedPreferences("user_details", Context.MODE_PRIVATE);
         String email = sp.getString("email","");
-        String password = sp.getString("password","");
         // Create EmailAuthCredential with email and password
         assert email != null;
         assert password != null;

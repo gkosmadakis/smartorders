@@ -3,6 +3,7 @@ package com.example.smartorders.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,18 +37,18 @@ public class EditAccountActivity extends AppCompatActivity {
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         /*Get first name and last name from shared preferences and use it in the fullname view*/
-        SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefers = this.getSharedPreferences("user_details", Context.MODE_PRIVATE);
         firstName = prefers.getString("firstName", "");
         lastName = prefers.getString("lastName","");
         phoneNumber = prefers.getString("phoneNumber","");
         email = prefers.getString("email","");
-        password = prefers.getString("password","");
+        //password = prefers.getString("password","");
         /*Set the values from preferences to the fields */
         firstNameField.setText(firstName);
         lastNameField.setText(lastName);
         phoneNumberField.setText(phoneNumber);
         emailField.setText(email);
-        passwordField.setText(password);
+        passwordField.setText("\u2022\u2022\u2022\u2022\u2022\u2022");//add bullets to the password as we don't know it, it is not stored anywhere
         firstNameField.setOnClickListener(v -> {
             firstNameIntent = "firstNameIntent";
             Intent intent = new Intent(getApplicationContext(), UpdateAccountActivity.class);

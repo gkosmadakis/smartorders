@@ -31,7 +31,7 @@ public class UpdatePhoneActivity extends AppCompatActivity {
     private String verificationCode;
     private String newPhoneNumber;
     private final UserService userService = new UserServiceImpl();
-
+    private String passwordExisting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ public class UpdatePhoneActivity extends AppCompatActivity {
     }
 
     private void verifyWithPhoneAuthCredential(final PhoneAuthCredential credential) {
-        userService.updateUserPhoneWithCredential(UpdatePhoneActivity.this, credential);
+        userService.updateUserPhoneWithCredential(UpdatePhoneActivity.this, credential, passwordExisting);
     }
 
     @Override
@@ -115,6 +115,7 @@ public class UpdatePhoneActivity extends AppCompatActivity {
         Intent intent = getIntent();
         newPhoneNumber = intent.getStringExtra("phoneNumber");
         startPhoneNumberVerification(newPhoneNumber);
+        passwordExisting = intent.getStringExtra("passwordEnteredByUser");
     }
 
     public void startPhoneNumberVerification(String phoneNumber) {
@@ -140,4 +141,19 @@ public class UpdatePhoneActivity extends AppCompatActivity {
                 token);             // ForceResendingToken from callbacks
         Toast.makeText(this,"resendVerificationCode", Toast.LENGTH_LONG);
     }
+
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 3) {
+            if (data.hasExtra("verifiedPhone")) {
+                System.out.println("UpdatePhoneActivity "+data.getStringExtra("verifiedPhone"));
+                userService.updateUserPhoneInFirebase(UpdatePhoneActivity.this, data);
+            }
+            else if (data.hasExtra("phoneUpdated")){
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        }
+    }*/
+
 }
